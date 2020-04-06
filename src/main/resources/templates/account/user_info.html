@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="layout/layout_user.html">
+      layout:decorate="~{layout/layout_user.html}">
 
 <head>
     <meta charset="UTF-8">
@@ -58,7 +58,6 @@
             <div class="form-inline mt-1">
                 <label class="col-md-2"></label>
                 <button class="btn btn-danger col-md-2" type="submit"><i class="fa fa-save"></i> 保存</button>
-                <button class="btn btn-secondary col-md-1 ml-1" type="reset"><i class="fa fa-refresh"></i> 重置</button>
             </div>
         </div>
     </form>

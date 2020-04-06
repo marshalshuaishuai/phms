@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="/layout/layout_main.html">
+      layout:decorate="~{layout/layout_main.html}">
 
 <head>
     <title>主页</title>
@@ -85,7 +85,7 @@
                                             class="fa fa-angle-double-right"></i> 个人信息更新</a>
                                 </li>
                                 <li class="nav-link border-bottom text-light bg-light">
-                                    <a class="d-block" href="#" th:href="@{/userinfo}"><i
+                                    <a class="d-block" href="#" th:href="@{/account/changePassword}"><i
                                             class="fa fa-angle-double-right"></i> 修改密码</a>
                                 </li>
                                 <li class="nav-link border-bottom text-light bg-light">

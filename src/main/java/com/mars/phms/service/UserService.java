@@ -9,4 +9,5 @@ public interface UserService extends UserDetailsService{
     PhUser findByName(String username);
     void updateUserBasicInfo(UserBasicInfo userinfo);
     UserBasicInfo getUserBasicInfo(String username);
+    boolean changeUserPassword(String username,String oldPassword,String newPassword);
 }

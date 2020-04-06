@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mars.phms.constant.Hint;
 import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.AreaService;
@@ -39,8 +40,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 @Controller
 @RequestMapping("/account")
 public class AccountController {
-    private static final String VALIDATE_CODE_ERROR = "validate_code_error";
-    private static final String CONFIRM_PASSWORD_ERROR="confirm_password_error";
     @Autowired
     private ValidateCodeCreateService validateCodeService;
 
@@ -72,26 +71,26 @@ public class AccountController {
         }
         String confirmPassword=request.getParameter("confirm_password");
         if(!StringUtils.equals(user.getPassword(), confirmPassword)){
-            request.setAttribute(CONFIRM_PASSWORD_ERROR, "两次密码不一致");
+            request.setAttribute(Hint.CONFIRM_PASSWORD_ERROR, "两次密码不一致");
             return "/account/register";
         }
         String codeInRequest = request.getParameter("validate_code");
         ValidateCode codeInSession = (ValidateCode) request.getSession().getAttribute("validate_code");
 
         if (StringUtils.isEmpty(codeInRequest)) {
-            request.setAttribute(VALIDATE_CODE_ERROR, "验证码不能为空");
+            request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不能为空");
             return "/account/register";
         }
         if (codeInSession == null) {
-            request.setAttribute(VALIDATE_CODE_ERROR, "验证码不存在");
+            request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不存在");
             return "/account/register";
         }
         if (codeInSession.isExpired()) {
-            request.setAttribute(VALIDATE_CODE_ERROR, "验证码已过期");
+            request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码已过期");
             return "/account/register";
         }
         if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
-            request.setAttribute(VALIDATE_CODE_ERROR, "验证码不匹配");
+            request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不匹配");
             return "/account/register";
         }
         request.getSession().removeAttribute("validate_code");
@@ -181,5 +180,41 @@ public class AccountController {
     @GetMapping("/accessDenied")
     public String toAccessDeniedPage() {
         return "/account/accessDenied";
+    }
+
+    /**
+     * 修改密码
+     * @return
+     */
+    @GetMapping("/changePassword")
+    public String toChangePasswordPage(){
+        return "/account/change_password";
+    }
+
+    @PostMapping("/changePassword")
+    public String doChangePassword(HttpServletRequest request){
+        String oldPassword= request.getParameter("oldPassword");
+        String newPassword=request.getParameter("newPassword");
+        String confirmPassword=request.getParameter("confirmPassword");
+        if(StringUtils.isEmpty(oldPassword)){
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"请输入原密码");
+        }
+        else if(StringUtils.isEmpty(newPassword)){
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"请输入新密码");
+        }
+        else if(!StringUtils.equals(newPassword,confirmPassword)){
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"两次密码不一致");
+        }
+        else
+        {
+            String username=SecurityContextHolder.getContext().getAuthentication().getName();
+            if(userService.changeUserPassword(username,oldPassword,newPassword)){
+                request.setAttribute(Hint.CHANGED_PASSWORD_SUCCESS,"密码修改成功");
+            }
+            else {
+                request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"原密码不正确");
+            }
+        }
+        return "/account/change_password";
     }
 }

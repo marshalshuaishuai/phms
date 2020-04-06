@@ -81,5 +81,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserBasicInfo(username);
     }
 
+    @Override
+    public boolean changeUserPassword(String username,String oldPassword,String newPassword) {
+        boolean result=false;
+        PhUser user=userRepository.findByUsername(username);
+        if(user!=null&&passwordEncoder.matches(oldPassword,user.getPassword())){
+            userRepository.changeUserPassword(username,passwordEncoder.encode(newPassword));
+            result=true;
+        }
+        return result;
+    }
+
 
 }

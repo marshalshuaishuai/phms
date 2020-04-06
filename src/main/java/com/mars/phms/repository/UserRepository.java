@@ -29,4 +29,9 @@ public interface UserRepository extends JpaRepository<PhUser,Long>{
     void updateUserBasicInfo(@Param("user") UserBasicInfo userBasicInfo);
 
 
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+    value = "update tb_user set password=:password where username=:username")
+    void changeUserPassword(@Param("username") String username, @Param("password") String encodedPassword);
 }

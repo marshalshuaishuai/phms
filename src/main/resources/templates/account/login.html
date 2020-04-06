@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorate="~{./layout/layout_main.html}">
+	  layout:decorate="~{layout/layout_main.html}">
 <head>
 <title>登录</title>
 </head>
@@ -41,7 +41,6 @@
 					<label class="col-md-2" for="validate_code">验证码</label> <input type="text"
 						class="form-control col-md-3 mr-1 border-top-0" name="validate_code" id="validate_code"> <img
 						src="get-validate-code" title="看不清？请点我！" alt="验证码" onclick="refresh(this)">
-						<span class="text-danger" th:if="${VALIDATE_CODE_ERROR}" th:text="${VALIDATE_CODE_ERROR}"></span>
 				</div>
 	
 				<div class="row form-inline mt-1">
