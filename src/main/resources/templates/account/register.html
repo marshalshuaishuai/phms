@@ -1,0 +1,70 @@
+<!doctype html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{layout_main.html}">
+<head>
+    <title>用户注册</title>
+</head>
+<body >
+    <section class="d-flex w-100 h-100 align-items-center"  layout:fragment="content">
+        <form class="container h-75 form-login" th:action="@{/account/register}" th:object="${RegistInfo}" method="post">
+            <div class="row h-100 align-items-center">
+                <div class="col-md-6 h-50">
+                    <h1 class="text-center pb-2">用户注册须知</h1>
+                    <p class="text-secondary">
+                        1.遵守国家有关互联网使用的法律法规；
+                    </p>
+                </div>
+                <div class="col-md-6 border-left">
+                    <div class="form-inline">
+                        <label class="col-md-3">用户名</label>
+                        <input type="text" class="form-control col-md-6 border-bottom-0" th:field="*{username}" required minlength="2" maxlength="20">
+                        <span class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-md-3">电子邮件</label>
+                        <input type="email" class="form-control col-md-8 border-bottom-0" th:field="*{email}" required>
+                        <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-md-3">密码</label>
+                        <input type="password" class="form-control col-md-5 border-bottom-0" th:field="*{password}" required minlength="4" maxlength="10">
+                        <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-md-3">确认密码</label>
+                        <input type="password" class="form-control col-md-5 " name="confirm_password" required>
+                        <span class="text-danger" th:if="${confirm_password_error!=null}" th:text="${confirm_password_error}"></span>
+                    </div>
+                    <div class="form-inline">
+                        <label class="col-md-3" >验证码</label>
+                        <input type="text" class="form-control col-md-3 border-top-0 mr-1" name="validate_code" required> 
+                        <img src="get-validate-code" title="看不清？请点我！" alt="验证码" onclick="refresh(this)">
+                        <span class="text-danger" th:if="${validate_code_error!=null}" th:text="${validate_code_error}"></span>
+                    </div>
+                    <div class="form-inline mt-1">
+                        <div class="col-md-3"></div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked disabled>注册代表同意使用条款
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-inline mt-2">
+                        <div class="col-md-3"></div>
+                        <button type="submit" class="btn btn-danger col-md-4">注册</button>
+                        <a class="btn btn btn-secondary col-md-2" href="login.html" th:href="@{/account/login}">取消</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section layout:fragment="scripts">
+        <script type="text/javascript">
+            function refresh(obj) {
+                obj.src="get-validate-code";
+            }
+        </script>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorate="~{./layout/layout_main.html}">
+<head>
+<title>登录</title>
+</head>
+<body>
+	<section  layout:fragment="content"  class="d-flex h-100 w-100 align-items-center">
+		<form class="form-login container h-50 " th:action="@{/login}" 
+		method="post">
+		<div class="row h-100 align-items-center ">
+			<!--左侧LOGO列-->
+			<div class="col-md-6 text-right pr-5">
+				<h1 class="text-muted">
+					个人<span style="font-size: 40pt; font-family: '华文琥珀', serif">健康</span>管理系统
+				</h1>
+				<h6 class="text-secondary">CopyRight &copy; 2020</h6>
+				<h1 class="bt"></h1>
+			</div>
+			<!--右侧登录列-->
+			<div class="col-md-6 border-left">
+				<div th:if="${param.error}">
+					<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>错误：</strong><span th:text="${session?.SPRING_SECURITY_LAST_EXCEPTION?.message}" ></span>
+					</div>
+				</div>
+	
+				<div class="row form-inline">
+					<label class="col-md-2 ">用户名</label> <input type="text"
+						class="col-md-6 form-control border-bottom-0" name="username" required>
+				</div>
+	
+				<div class="row form-inline">
+					<label class="col-md-2" for="password">密码</label> <input type="password"
+						class="col-md-6 form-control" name="password" id="password" required>
+				</div>
+	
+				<div class="row form-inline">
+					<label class="col-md-2" for="validate_code">验证码</label> <input type="text"
+						class="form-control col-md-3 mr-1 border-top-0" name="validate_code" id="validate_code"> <img
+						src="get-validate-code" title="看不清？请点我！" alt="验证码" onclick="refresh(this)">
+						<span class="text-danger" th:if="${VALIDATE_CODE_ERROR}" th:text="${VALIDATE_CODE_ERROR}"></span>
+				</div>
+	
+				<div class="row form-inline mt-1">
+					<div class="col-md-2"></div>
+					<div class="form-check-inline">
+						<label class="form-check-label"> <input type="checkbox" class="form-check-input" name="remember-me">自动登录
+						</label>
+					</div>
+					<div class="col-md-2">
+						<a href="forgot_password.html">忘记密码</a>
+					</div>
+					<div class="col-md-2">
+						<a href="/account/register.html" th:href="@{/account/register}">用户注册</a>
+					</div>
+				</div>
+	
+				<div class="row form-inline mt-2">
+					<div class="col-md-2"></div>
+					<button type="submit" class="btn btn-danger col-md-4" >登录</button>
+					<button type="reset" class="btn btn-secondary col-md-2">重置</button>
+				</div>
+	
+			</div>
+		</div>
+	</form>
+	</section>
+
+
+	<section layout:fragment="scripts">
+		<script type="text/javascript">
+			function refresh(obj) {
+				obj.src="get-validate-code";
+			}
+		</script>
+	</section>
+
+</body>
+</html>
