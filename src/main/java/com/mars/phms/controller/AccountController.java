@@ -19,8 +19,9 @@ import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.AreaService;
 import com.mars.phms.service.UserService;
-import com.mars.phms.utils.ValidateCode.ValidateCode;
-import com.mars.phms.utils.ValidateCode.ValidateCodeCreateService;
+import com.mars.phms.utils.email.EmailService;
+import com.mars.phms.utils.validatecode.ValidateCode;
+import com.mars.phms.utils.validatecode.ValidateCodeCreateService;
 
 import com.mars.phms.vo.UserBasicInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +45,8 @@ public class AccountController {
     private UserService userService;
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private EmailService emailService;
 
     /**
      * 用户注册页面
@@ -65,62 +65,74 @@ public class AccountController {
      * @return
      */
     @PostMapping("/register")
-    public String doRegister(@ModelAttribute("RegistInfo") @Validated PhUser user, BindingResult result,HttpServletRequest request) {
+    public String doRegister(@ModelAttribute("RegistInfo") @Validated PhUser user, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "/account/register";
         }
-        String confirmPassword=request.getParameter("confirm_password");
-        if(!StringUtils.equals(user.getPassword(), confirmPassword)){
+        String confirmPassword = request.getParameter("confirm_password");
+        if (!StringUtils.equals(user.getPassword(), confirmPassword)) {
             request.setAttribute(Hint.CONFIRM_PASSWORD_ERROR, "两次密码不一致");
             return "/account/register";
         }
+        if (!isValidateCodeValid(request))
+            return "/account/register";
+        user.setRegistDay(new Date());
+        user.setSex(1);
+        userService.saveUser(user);
+        return "/account/login";
+    }
+
+    /**
+     * 判断用户输入的验证码是否正确
+     * @param request
+     * @return
+     */
+    private boolean isValidateCodeValid(HttpServletRequest request) {
         String codeInRequest = request.getParameter("validate_code");
         ValidateCode codeInSession = (ValidateCode) request.getSession().getAttribute("validate_code");
 
         if (StringUtils.isEmpty(codeInRequest)) {
             request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不能为空");
-            return "/account/register";
+            return false;
         }
         if (codeInSession == null) {
             request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不存在");
-            return "/account/register";
+            return false;
         }
         if (codeInSession.isExpired()) {
             request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码已过期");
-            return "/account/register";
+            return false;
         }
         if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
             request.setAttribute(Hint.VALIDATE_CODE_ERROR, "验证码不匹配");
-            return "/account/register";
+            return false;
         }
         request.getSession().removeAttribute("validate_code");
-        user.setRegistDay(new Date());
-        user.setSex(1);
-        userService.saveUser(user);
-        return "/account/login";
-        // return user == null ? "注册失败" : "注册成功";
+        return true;
     }
 
 
     /**
      * 登录
+     *
      * @return
      */
     @GetMapping("/login")
-    public String toLoginPage(){
+    public String toLoginPage() {
         return "/account/login";
     }
 
     /**
      * 登出
+     *
      * @param request
      * @param response
      * @return
      */
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request,HttpServletResponse response){
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth!=null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/account/login";
@@ -128,13 +140,14 @@ public class AccountController {
 
     /**
      * 用户基本信息更新
+     *
      * @param model
      * @return
      */
     @GetMapping("/userInfo")
     public String toUserInfo(Model model) {
-        String username=SecurityContextHolder.getContext().getAuthentication().getName();
-        UserBasicInfo userBasicInfo=userService.getUserBasicInfo(username);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserBasicInfo userBasicInfo = userService.getUserBasicInfo(username);
         model.addAttribute("userBasicInfo", userBasicInfo);
         List<PhArea> provinces = areaService.getProvinces();
         model.addAttribute("provinces", provinces);
@@ -147,12 +160,13 @@ public class AccountController {
 
     /**
      * 用户基本信息更新
+     *
      * @param userinfo
      * @return
      */
     @PostMapping("/saveUserInfo")
-    public String saveUserInfo(@ModelAttribute("user") UserBasicInfo userinfo){
-        if(userinfo.getAreaId()==-1)
+    public String saveUserInfo(@ModelAttribute("user") UserBasicInfo userinfo) {
+        if (userinfo.getAreaId() == -1)
             userinfo.setAreaId(null);
         userService.updateUserBasicInfo(userinfo);
         return "redirect:/account/userInfo";
@@ -173,8 +187,26 @@ public class AccountController {
         ImageIO.write(validateCode.getImage(), "JPEG", response.getOutputStream());
     }
 
+    @GetMapping("/send-validate-code")
+    @ResponseBody
+    public String sendValidateCode(HttpServletRequest request) {
+        try {
+            String to = request.getParameter("to");
+            if(userService.isEmailUsed(to)){
+                return "该邮箱已被占用，请更换后重试";
+            }
+            ValidateCode validateCode = validateCodeService.createImageCode();
+            request.getSession().setAttribute("validate_code", validateCode);
+            emailService.sendValidateCode(to, validateCode.getCode());
+            return "验证码已成功发送到："+to;
+        } catch (Exception e) {
+            return "验证码发送失败，请重试";
+        }
+    }
+
     /**
      * 权限不足页面
+     *
      * @return
      */
     @GetMapping("/accessDenied")
@@ -184,37 +216,62 @@ public class AccountController {
 
     /**
      * 修改密码
+     *
      * @return
      */
     @GetMapping("/changePassword")
-    public String toChangePasswordPage(){
+    public String toChangePasswordPage() {
         return "/account/change_password";
     }
 
     @PostMapping("/changePassword")
-    public String doChangePassword(HttpServletRequest request){
-        String oldPassword= request.getParameter("oldPassword");
-        String newPassword=request.getParameter("newPassword");
-        String confirmPassword=request.getParameter("confirmPassword");
-        if(StringUtils.isEmpty(oldPassword)){
-            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"请输入原密码");
-        }
-        else if(StringUtils.isEmpty(newPassword)){
-            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"请输入新密码");
-        }
-        else if(!StringUtils.equals(newPassword,confirmPassword)){
-            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"两次密码不一致");
-        }
-        else
-        {
-            String username=SecurityContextHolder.getContext().getAuthentication().getName();
-            if(userService.changeUserPassword(username,oldPassword,newPassword)){
-                request.setAttribute(Hint.CHANGED_PASSWORD_SUCCESS,"密码修改成功");
-            }
-            else {
-                request.setAttribute(Hint.CHANGE_PASSWORD_ERROR,"原密码不正确");
+    public String doChangePassword(HttpServletRequest request) {
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+        if (StringUtils.isEmpty(oldPassword)) {
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR, "请输入原密码");
+        } else if (StringUtils.isEmpty(newPassword)) {
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR, "请输入新密码");
+        } else if (!StringUtils.equals(newPassword, confirmPassword)) {
+            request.setAttribute(Hint.CHANGE_PASSWORD_ERROR, "两次密码不一致");
+        } else {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (userService.changeUserPassword(username, oldPassword, newPassword)) {
+                request.setAttribute(Hint.CHANGED_PASSWORD_SUCCESS, "密码修改成功");
+            } else {
+                request.setAttribute(Hint.CHANGE_PASSWORD_ERROR, "原密码不正确");
             }
         }
         return "/account/change_password";
+    }
+
+    /**
+     * 变更邮箱
+     * @return
+     */
+    @GetMapping("/changeEmail")
+    public String toChangeEmailPage(Model model){
+        String username=SecurityContextHolder.getContext().getAuthentication().getName();
+        PhUser user=userService.findByName(username);
+        model.addAttribute("email",user.getEmail());
+        return "/account/change_email";
+    }
+
+    @PostMapping("/changeEmail")
+    public String doChangeEmail(HttpServletRequest request){
+        String email=request.getParameter("email");
+        String email_old=request.getParameter("old_email");
+        request.setAttribute("email",email_old);
+        if(StringUtils.isEmpty(email)){
+            request.setAttribute(Hint.EMAIL_ERROR,"请输入新邮箱地址");
+            return "/account/change_email";
+        }
+        if(!isValidateCodeValid(request)){
+            return "/account/change_email";
+        }
+        String username=SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.changeEmail(username,email);
+        return "redirect:/account/changeEmail";
     }
 }

@@ -92,5 +92,18 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public boolean isEmailUsed(String email) {
+        if(userRepository.findByEmail(email)!=null)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public void changeEmail(String username,String email) {
+        userRepository.changeEmail(username,email);
+    }
+
 
 }

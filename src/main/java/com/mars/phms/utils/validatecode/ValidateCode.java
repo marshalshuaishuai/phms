@@ -1,4 +1,4 @@
-package com.mars.phms.utils.ValidateCode;
+package com.mars.phms.utils.validatecode;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;

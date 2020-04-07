@@ -10,4 +10,18 @@ public interface UserService extends UserDetailsService{
     void updateUserBasicInfo(UserBasicInfo userinfo);
     UserBasicInfo getUserBasicInfo(String username);
     boolean changeUserPassword(String username,String oldPassword,String newPassword);
+
+    /**
+     * 判断邮箱是否已被占用
+     * @param email 邮箱地址
+     * @return
+     */
+    boolean isEmailUsed(String email);
+
+    /**
+     * 变更邮箱
+     * @param email
+     * @return
+     */
+    void changeEmail(String username,String email);
 }

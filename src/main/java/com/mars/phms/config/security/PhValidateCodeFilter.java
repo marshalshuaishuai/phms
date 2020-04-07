@@ -13,7 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mars.phms.utils.ValidateCode.ValidateCode;
+import com.mars.phms.utils.validatecode.ValidateCode;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -13,7 +13,7 @@
     <header class="admin-header">
         <nav class="navbar navbar-light bg-line-gradient-top navbar-expand-sm border-bottom fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand"><img src="../../static/images/logo.png">个人健康管理系统 </a>
+                <a class="navbar-brand"><img src="../../static/images/logo.png" th:src="@{images/logo.png}">个人健康管理系统 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -89,7 +89,7 @@
                                             class="fa fa-angle-double-right"></i> 修改密码</a>
                                 </li>
                                 <li class="nav-link border-bottom text-light bg-light">
-                                    <a class="d-block" href="#" th:href="@{/userinfo}"><i
+                                    <a class="d-block" href="#" th:href="@{/account/changeEmail}"><i
                                             class="fa fa-angle-double-right"></i> 变更邮箱</a>
                                 </li>
                                 <li class="nav-link border-bottom text-light bg-light">

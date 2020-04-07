@@ -62,7 +62,8 @@ public class PhWebSecurityConfig extends WebSecurityConfigurerAdapter {
         PhValidateCodeFilter validateCodeFilter = new PhValidateCodeFilter();
         // 自定义授权规则
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).authorizeRequests()
-                .antMatchers("/account/login", "/login", "/account/register", "/account/get-validate-code", "/css/**",
+                .antMatchers("/account/login", "/login", "/account/register",
+                        "/account/get-validate-code","/account/send-validate-code", "/css/**",
                         "/js/**", "/images/**", "/lib/**")
                 .permitAll().antMatchers("/", "/home").hasRole("USER").antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and().formLogin().loginPage("/account/login").loginProcessingUrl("/login")

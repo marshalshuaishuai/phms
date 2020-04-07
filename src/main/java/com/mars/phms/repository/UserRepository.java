@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<PhUser,Long>{
     PhUser findByUsername(String username);
+    PhUser findByEmail(String email);
 
     @Query("select new com.mars.phms.vo.UserBasicInfo(u.id,u.username,u.realName,u.phone,u.sex,u.detailAddress,a.id,a.parentId)" +
             " from PhUser u left join PhArea a on u.area.id=a.id where u.username=:name")
@@ -34,4 +35,9 @@ public interface UserRepository extends JpaRepository<PhUser,Long>{
     @Query(nativeQuery = true,
     value = "update tb_user set password=:password where username=:username")
     void changeUserPassword(@Param("username") String username, @Param("password") String encodedPassword);
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,value = "update tb_user set email=:email where username=:username")
+    void changeEmail(@Param("username") String username,@Param("email") String email);
 }
