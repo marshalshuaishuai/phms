@@ -20,8 +20,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_patient")
-public class PhPatient {
+@Table(name = "tb_member")
+public class PhMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class PhPatient {
     @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH},optional = false)
     private PhUser user;
     //与病史 phmedicalhistory一对多
-    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<PhMedicalHistory> medicalHistories;
     //与地区 pharea一对一
     @OneToOne

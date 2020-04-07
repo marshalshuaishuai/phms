@@ -69,7 +69,7 @@ public class PhUser implements UserDetails{
     private List<PhRole> roles;
     //与患者 phpatient一对多
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<PhPatient> patients;
+    private List<PhMember> patients;
     //与地区 pharea一对一
     @OneToOne
     @JoinColumn(name = "area_id",referencedColumnName = "id")
