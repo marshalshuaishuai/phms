@@ -1,6 +1,7 @@
 package com.mars.phms.service;
 
 import com.mars.phms.domain.PhMember;
+import org.springframework.data.domain.Example;
 
 import java.util.List;
 
@@ -29,4 +30,12 @@ public interface MemberService {
      * @return
      */
     PhMember saveMember(PhMember member);
+
+    /**
+     * 根据条件查找对应成员
+     * @param memberExample
+     * @return
+     */
+    List<PhMember> findAll(Example<PhMember> memberExample);
+    void deleteMember(long id);
 }

@@ -77,7 +77,7 @@ public class AccountController {
         if (!isValidateCodeValid(request))
             return "/account/register";
         user.setRegistDay(new Date());
-        user.setSex(1);
+        user.setSex("男");
         userService.saveUser(user);
         return "/account/login";
     }

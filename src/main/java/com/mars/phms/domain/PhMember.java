@@ -31,7 +31,7 @@ public class PhMember {
     private long id;
     @NotBlank(message = "姓名不能为空")
     private String name;
-    private Integer sex;
+    private String sex;
     @NotNull(message = "请选择出生日期")
     @DateTimeFormat(pattern = "yyyy/mm/dd")
     private Date birthday;

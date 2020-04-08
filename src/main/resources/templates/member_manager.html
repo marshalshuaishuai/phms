@@ -11,14 +11,14 @@
 
 <body>
 <section layout:fragment="content_user">
-    <form >
+    <form th:action="@{/memberManager}" th:object="${member}">
         <div class="bg-light mb-2 p-2 border rounded">
             <div class="navbar-expand-sm">
                 <div class="navbar-collapse flex-sm-row-reverse">
                     <a class="btn btn-success btn-sm rounded text-light" href="member.html" th:href="@{/memberAdd}"><i class="fa fa-plus "></i> 添加</a>
                     <div class=" flex-grow-1 form-inline">
                         <span class=" btn btn-light" data-toggle="collapse" data-target="#search"><i class="fa fa-angle-double-down  mx-2 text-secondary"></i></span>
-                        <input type="text" class="form-control rounded-pill mx-2 col-md-3" placeholder="搜索关键字" >
+                        <input type="text" class="form-control rounded-pill mx-2 col-md-3" placeholder="搜索关键字" th:field="*{name}">
                         <button type="submit" class="btn btn-secondary btn-sm rounded"><i class="fa fa-search "></i> 搜索</button>
                     </div>
                 </div>
@@ -28,8 +28,8 @@
         <div class="collapse border p-2 mb-2 bg-light" id="search">
             <div class="form-inline radio">
                 <label class="col-md-2">性别</label>
-                <label class="radio-inline"><input type="radio" name="sex"  value="1">男</label>
-                <label class="radio-inline ml-5"><input type="radio" name="sex" value="0">女</label>
+                <label class="radio-inline"><input type="radio" value="男" th:field="*{sex}">男</label>
+                <label class="radio-inline ml-5"><input type="radio" value="女" th:field="*{sex}">女</label>
             </div>
         </div>
     </form>
@@ -52,7 +52,7 @@
             <tr th:each="member:${members}">
                 <td th:text="${members.indexOf(member)+1}">1</td>
                 <td th:text="${member.name}">姓名</td>
-                <td th:text="${member.sex}==1?'男':'女'">性别</td>
+                <td th:text="${member.sex}">性别</td>
                 <td th:text="${#dates.format(member.birthday,'yyyy/mm/dd')}">出生日期</td>
                 <td th:text="${member.height}">身高</td>
                 <td th:text="${member.weight}">体重</td>
@@ -60,7 +60,7 @@
                 <td th:text="${member.healthInsuranceNumber}">医保卡号</td>
                 <td>
                     <a class="btn btn-success btn-sm rounded text-light" th:href="@{'/memberUpdate?id='+${member.id}}">修改</a>
-                    <a class="btn btn-danger btn-sm rounded text-light">删除</a>
+                    <a class="btn btn-danger btn-sm rounded text-light" th:href="@{'/memberDelete?id='+${member.id}}" onclick="return confirm('您确定要删除此成员吗？')">删除</a>
                 </td>
             </tr>
         </tbody>

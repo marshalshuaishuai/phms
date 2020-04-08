@@ -4,7 +4,10 @@ import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.MemberService;
+import com.mars.phms.vo.MemberSearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +34,17 @@ public class HomeController extends PhBaseController {
 
 
     @GetMapping("/memberManager")
-    public String toMemberManagerPage(Model model){
+    public String toMemberManagerPage(@ModelAttribute("member") PhMember member, Model model){
         PhUser user = (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<PhMember> members=memberService.findByUserId(user.getId());
+        member.setUser(user);
+        ExampleMatcher matcher=ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                .withIgnorePaths("height")
+                .withIgnorePaths("weight")
+                .withIgnorePaths("id");
+        Example<PhMember> memberExample=Example.of(member,matcher);
+        List<PhMember> members=memberService.findAll(memberExample);
+        //List<PhMember> members=memberService.findByUserId(user.getId());
         model.addAttribute("members",members);
         return "/member_manager";
     }
@@ -66,6 +77,11 @@ public class HomeController extends PhBaseController {
         if(member.getArea().getId()==-1)
             member.setArea(null);
         memberService.saveMember(member);
+        return "redirect:/memberManager";
+    }
+    @GetMapping("/memberDelete")
+    public String doDeleteMember(@RequestParam("id") long id){
+        memberService.deleteMember(id);
         return "redirect:/memberManager";
     }
 }

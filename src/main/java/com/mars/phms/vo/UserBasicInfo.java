@@ -10,7 +10,7 @@ public class UserBasicInfo {
     private String username;
     private String realName;
     private String phone;
-    private Integer sex;
+    private String sex;
     private String detailAddress;
     private Long areaId;
     private Long areaParentId;

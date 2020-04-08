@@ -58,7 +58,7 @@ public class PhUser implements UserDetails{
 
     private String realName;
     private String phone;
-    private Integer sex;
+    private String sex;
     private String detailAddress;
     private String headImg;
     private Date registDay;

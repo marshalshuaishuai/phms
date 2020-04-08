@@ -4,6 +4,7 @@ import com.mars.phms.domain.PhMember;
 import com.mars.phms.repository.MemberRepository;
 import com.mars.phms.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +32,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public PhMember saveMember(PhMember member) {
         return memberRepository.save(member);
+    }
+
+    @Override
+    public List<PhMember> findAll(Example<PhMember> memberExample){
+        return memberRepository.findAll(memberExample);
+    }
+
+    @Override
+    public void deleteMember(long id) {
+        memberRepository.deleteById(id);
     }
 }
