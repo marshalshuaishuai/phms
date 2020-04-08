@@ -55,11 +55,7 @@ public class PhUser implements UserDetails{
     @NotBlank(message = "请输入Email地址")
     @Email(message = "请输入正确Email地址")
     private String email;
-
-    private String realName;
     private String phone;
-    private String sex;
-    private String detailAddress;
     private String headImg;
     private Date registDay;
 
@@ -73,10 +69,7 @@ public class PhUser implements UserDetails{
     //与患者 phpatient一对多
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<PhMember> patients;
-    //与地区 pharea一对一
-    @OneToOne
-    @JoinColumn(name = "area_id",referencedColumnName = "id")
-    private PhArea area;
+
 
 
     @Override

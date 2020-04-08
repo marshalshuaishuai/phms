@@ -10,7 +10,7 @@ INSERT tb_role(id,authority) SELECT 2, 'ROLE_USER' FROM dual WHERE not EXISTS (s
 -- ----------------------------
 -- 添加默认用户
 -- ----------------------------
-INSERT tb_user(id,password,username,sex) SELECT 1, '$2a$10$l4kYyKgk2s.mNUluriWDwenETe8h5.h9zxFr0S3dxmhYAIN/Mm78q', 'sa','1' FROM dual WHERE not EXISTS (select 1 from tb_user where tb_user.id = 1);
+INSERT tb_user(id,password,username) SELECT 1, '$2a$10$l4kYyKgk2s.mNUluriWDwenETe8h5.h9zxFr0S3dxmhYAIN/Mm78q', 'sa' FROM dual WHERE not EXISTS (select 1 from tb_user where tb_user.id = 1);
 
 -- ----------------------------
 -- 将默认用户加入管理员角色

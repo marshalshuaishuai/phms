@@ -5,7 +5,6 @@ import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.MemberService;
-import com.mars.phms.vo.MemberSearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -17,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -44,8 +42,6 @@ public class HomeController extends PhBaseController {
         member.setUser(user);
         ExampleMatcher matcher=ExampleMatcher.matching()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-                .withIgnorePaths("height")
-                .withIgnorePaths("weight")
                 .withIgnorePaths("id");
         Example<PhMember> memberExample=Example.of(member,matcher);
         //List<PhMember> members=memberService.findAll(memberExample);

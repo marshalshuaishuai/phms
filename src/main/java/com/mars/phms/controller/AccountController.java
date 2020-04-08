@@ -16,14 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mars.phms.constant.Hint;
 import com.mars.phms.domain.PhArea;
+import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
-import com.mars.phms.service.AreaService;
+import com.mars.phms.service.MemberService;
 import com.mars.phms.service.UserService;
 import com.mars.phms.utils.email.EmailService;
 import com.mars.phms.utils.validatecode.ValidateCode;
 import com.mars.phms.utils.validatecode.ValidateCodeCreateService;
 
-import com.mars.phms.vo.UserBasicInfo;
+import com.mars.phms.vo.UserRegisterInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,16 +38,15 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends PhBaseController {
     @Autowired
     private ValidateCodeCreateService validateCodeService;
-
     @Autowired
     private UserService userService;
     @Autowired
-    private AreaService areaService;
-    @Autowired
     private EmailService emailService;
+    @Autowired
+    private MemberService memberService;
 
     /**
      * 用户注册页面
@@ -54,7 +54,7 @@ public class AccountController {
      * @return
      */
     @GetMapping("/register")
-    public String toRegisterPage(@ModelAttribute("RegistInfo") PhUser user) {
+    public String toRegisterPage(@ModelAttribute("user") PhUser user) {
         return "/account/register";
     }
 
@@ -65,7 +65,7 @@ public class AccountController {
      * @return
      */
     @PostMapping("/register")
-    public String doRegister(@ModelAttribute("RegistInfo") @Validated PhUser user, BindingResult result, HttpServletRequest request) {
+    public String doRegister(@ModelAttribute("user") @Validated PhUser user, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "/account/register";
         }
@@ -77,8 +77,13 @@ public class AccountController {
         if (!isValidateCodeValid(request))
             return "/account/register";
         user.setRegistDay(new Date());
-        user.setSex("男");
-        userService.saveUser(user);
+        PhUser savedUser=userService.saveUser(user);
+        //注册成功后将自己加入成员中
+        PhMember member=new PhMember();
+        member.setUser(savedUser);
+        member.setName("本人");
+        member.setBirthday(new Date());
+        memberService.saveMember(member);
         return "/account/login";
     }
 
@@ -139,7 +144,7 @@ public class AccountController {
     }
 
     /**
-     * 用户基本信息更新
+     * 用户注册信息更新页面
      *
      * @param model
      * @return
@@ -147,27 +152,20 @@ public class AccountController {
     @GetMapping("/userInfo")
     public String toUserInfo(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserBasicInfo userBasicInfo = userService.getUserBasicInfo(username);
-        model.addAttribute("userBasicInfo", userBasicInfo);
-        List<PhArea> provinces = areaService.getProvinces();
-        model.addAttribute("provinces", provinces);
-        if (userBasicInfo.getAreaParentId() != null) {
-            List<PhArea> cities = areaService.getCities(userBasicInfo.getAreaParentId());
-            model.addAttribute("cities", cities);
-        }
+        UserRegisterInfo registerInfo = userService.getUserBasicInfo(username);
+        model.addAttribute("registerInfo", registerInfo);
+
         return "/account/user_info";
     }
 
     /**
-     * 用户基本信息更新
+     * 用户注册信息更新
      *
      * @param userinfo
      * @return
      */
     @PostMapping("/saveUserInfo")
-    public String saveUserInfo(@ModelAttribute("user") UserBasicInfo userinfo) {
-        if (userinfo.getAreaId() == -1)
-            userinfo.setAreaId(null);
+    public String saveUserInfo(@ModelAttribute("user") UserRegisterInfo userinfo) {
         userService.updateUserBasicInfo(userinfo);
         return "redirect:/account/userInfo";
     }
@@ -187,6 +185,11 @@ public class AccountController {
         ImageIO.write(validateCode.getImage(), "JPEG", response.getOutputStream());
     }
 
+    /**
+     * 通过邮件发送验证码
+     * @param request
+     * @return
+     */
     @GetMapping("/send-validate-code")
     @ResponseBody
     public String sendValidateCode(HttpServletRequest request) {

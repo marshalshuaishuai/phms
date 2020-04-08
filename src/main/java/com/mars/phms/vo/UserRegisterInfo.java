@@ -5,13 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 @Data
 @AllArgsConstructor
-public class UserBasicInfo {
+public class UserRegisterInfo {
     private Long id;
     private String username;
-    private String realName;
     private String phone;
-    private String sex;
-    private String detailAddress;
-    private Long areaId;
-    private Long areaParentId;
 }

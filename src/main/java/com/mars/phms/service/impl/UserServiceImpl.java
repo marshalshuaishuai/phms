@@ -8,14 +8,13 @@ package com.mars.phms.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.mars.phms.domain.PhRole;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.repository.RoleRepository;
 import com.mars.phms.repository.UserRepository;
 import com.mars.phms.service.UserService;
-import com.mars.phms.vo.UserBasicInfo;
+import com.mars.phms.vo.UserRegisterInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PhUser saveUser(PhUser user) {
+        PhUser userReturn=null;
         // 如果用户名和密码都不为空，写入数据库
         if (!StringUtils.isEmpty(user.getUsername()) && !StringUtils.isEmpty(user.getPassword())) {
             // 密码加密
@@ -46,12 +46,9 @@ public class UserServiceImpl implements UserService {
             List<PhRole> roles = new ArrayList<>();
             roles.add(role);
             user.setRoles(roles);
-            userRepository.save(user);
-        } else {
-            user = null;
+            userReturn=userRepository.save(user);
         }
-
-        return user;
+        return userReturn;
     }
 
     @Override
@@ -72,12 +69,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserBasicInfo(UserBasicInfo basicInfo) {
+    public void updateUserBasicInfo(UserRegisterInfo basicInfo) {
         userRepository.updateUserBasicInfo(basicInfo);
     }
 
     @Override
-    public UserBasicInfo getUserBasicInfo(String username) {
+    public UserRegisterInfo getUserBasicInfo(String username) {
         return userRepository.getUserBasicInfo(username);
     }
 

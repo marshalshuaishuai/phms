@@ -141,6 +141,10 @@ a.navbar-brand {
     height: 50px;
 }
 
-.table-col-orderno{
+.table-col-order-no{
     width: 100px;
+}
+
+.table-col-operate{
+    width: 15%;
 }

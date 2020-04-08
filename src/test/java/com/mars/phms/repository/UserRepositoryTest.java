@@ -1,8 +1,7 @@
 package com.mars.phms.repository;
 
-import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhUser;
-import com.mars.phms.vo.UserBasicInfo;
+import com.mars.phms.vo.UserRegisterInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ class UserRepositoryTest {
 
     @Test
     void getUserBasicInfo() {
-        UserBasicInfo basicInfo=userRepository.getUserBasicInfo("user");
+        UserRegisterInfo basicInfo=userRepository.getUserBasicInfo("user");
         assertNotNull(basicInfo);
     }
 

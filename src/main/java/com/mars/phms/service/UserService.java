@@ -1,14 +1,14 @@
 package com.mars.phms.service;
 
 import com.mars.phms.domain.PhUser;
-import com.mars.phms.vo.UserBasicInfo;
+import com.mars.phms.vo.UserRegisterInfo;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService{
     PhUser saveUser(PhUser user);
     PhUser findByName(String username);
-    void updateUserBasicInfo(UserBasicInfo userinfo);
-    UserBasicInfo getUserBasicInfo(String username);
+    void updateUserBasicInfo(UserRegisterInfo userinfo);
+    UserRegisterInfo getUserBasicInfo(String username);
     boolean changeUserPassword(String username,String oldPassword,String newPassword);
 
     /**

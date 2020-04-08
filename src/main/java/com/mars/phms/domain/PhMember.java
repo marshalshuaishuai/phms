@@ -35,8 +35,7 @@ public class PhMember {
     @NotNull(message = "请选择出生日期")
     @DateTimeFormat(pattern = "yyyy/mm/dd")
     private Date birthday;
-    private int height;
-    private int weight;
+    private String detailAddress;
     private String idNumber;
     private String healthInsuranceNumber;
 
