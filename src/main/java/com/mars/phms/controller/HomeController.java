@@ -1,5 +1,6 @@
 package com.mars.phms.controller;
 
+import com.mars.phms.constant.PhParam;
 import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
@@ -8,6 +9,7 @@ import com.mars.phms.vo.MemberSearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +36,10 @@ public class HomeController extends PhBaseController {
 
 
     @GetMapping("/memberManager")
-    public String toMemberManagerPage(@ModelAttribute("member") PhMember member, Model model){
+    public String toMemberManagerPage(@ModelAttribute("member") PhMember member,
+                                      Model model,
+                                      @RequestParam(value = "pageNum",defaultValue = "0") int pageNum,
+                                      @RequestParam(value = "pageSize",defaultValue = PhParam.PAGE_SIZE) int pageSize){
         PhUser user = (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         member.setUser(user);
         ExampleMatcher matcher=ExampleMatcher.matching()
@@ -43,8 +48,9 @@ public class HomeController extends PhBaseController {
                 .withIgnorePaths("weight")
                 .withIgnorePaths("id");
         Example<PhMember> memberExample=Example.of(member,matcher);
-        List<PhMember> members=memberService.findAll(memberExample);
-        //List<PhMember> members=memberService.findByUserId(user.getId());
+        //List<PhMember> members=memberService.findAll(memberExample);
+        Page<PhMember> members=memberService.findAllPaged(memberExample,pageNum,pageSize);
+
         model.addAttribute("members",members);
         return "/member_manager";
     }

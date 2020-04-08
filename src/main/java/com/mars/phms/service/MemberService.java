@@ -2,6 +2,7 @@ package com.mars.phms.service;
 
 import com.mars.phms.domain.PhMember;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -37,5 +38,11 @@ public interface MemberService {
      * @return
      */
     List<PhMember> findAll(Example<PhMember> memberExample);
+
+    /**
+     * 根据ID删除成员
+     * @param id
+     */
     void deleteMember(long id);
+    Page<PhMember> findAllPaged(Example<PhMember> memberExample, int pageNum, int pageSize);
 }

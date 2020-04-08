@@ -34,7 +34,7 @@
         </div>
     </form>
 
-    <table class="table table-striped bg-line-gradient-bottom text-center">
+    <table class="table table-striped bg-line-gradient-top text-center">
         <thead class="text-muted">
         <tr>
             <th class="table-col-orderno">序号</th>
@@ -50,7 +50,7 @@
         </thead>
         <tbody class="bg-light ">
             <tr th:each="member:${members}">
-                <td th:text="${members.indexOf(member)+1}">1</td>
+                <td th:text="${members.getContent().indexOf(member)+1}">1</td>
                 <td th:text="${member.name}">姓名</td>
                 <td th:text="${member.sex}">性别</td>
                 <td th:text="${#dates.format(member.birthday,'yyyy/mm/dd')}">出生日期</td>
@@ -66,6 +66,31 @@
         </tbody>
     </table>
 
+    <div class="text-center">
+        <ul class="pagination pagination-sm pull-left">
+            <!--首页-->
+            <li class="page-item">
+                <a class="page-link" th:href="@{'/memberManager?pageNum=0'}">首页</a>
+            </li>
+            <!--上一页-->
+            <li class="page-item" th:if="${members.hasPrevious()}">
+                <a class="page-link" th:href="@{'/memberManager?pageNum='+${members.previousPageable().getPageNumber()}}" th:text="上一页"></a>
+            </li>
+            <!--中间页-->
+            <li class="page-item" th:each="pageNum:${#numbers.sequence(0,members.getTotalPages()-1)}">
+                <a class="page-link" th:href="@{'memberManager?pageNum='+${pageNum}}" th:text="${pageNum+1}" th:if="${pageNum ne members.pageable.getPageNumber()}"></a>
+                <a class="page-link" th:href="@{'memberManager?pageNum='+${pageNum}}" th:text="${pageNum+1}" th:if="${pageNum eq members.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+            </li>
+            <!--下一页-->
+            <li class="page-item" th:if="${members.hasNext()}">
+                <a class="page-link" th:href="'/memberManager?pageNum=' + ${members.nextPageable().getPageNumber()}" th:text="下一页"></a>
+            </li>
+            <!-- 尾页 -->
+            <li class="page-item">
+                <a class="page-link" th:href="'/memberManager?pageNum=' + ${members.getTotalPages() - 1}">尾页</a>
+            </li>
+        </ul>
+    </div>
 </section>
 
 </body>

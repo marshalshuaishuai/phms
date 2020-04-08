@@ -4,7 +4,7 @@ import com.mars.phms.domain.PhMember;
 import com.mars.phms.repository.MemberRepository;
 import com.mars.phms.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,5 +42,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void deleteMember(long id) {
         memberRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<PhMember> findAllPaged(Example<PhMember> memberExample, int pageNum, int pageSize) {
+        Sort sort= Sort.by(Sort.Direction.DESC,"id");
+        Pageable pageable= PageRequest.of(pageNum,pageSize,sort);
+        Page<PhMember> members=memberRepository.findAll(memberExample,pageable);
+        return members;
     }
 }
