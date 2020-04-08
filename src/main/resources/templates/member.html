@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/layout_user.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加或修改成员信息</title>
+</head>
+
+<body>
+<section layout:fragment="content_user">
+    <form th:action="@{/member}" th:object="${member}"  method="post">
+        <div class="bg-light mb-2 p-2 border rounded">
+            <div class="form-inline">
+                <a class="btn btn-light" href="member_manager.html" th:href="@{/memberManager}"><i class="fa fa-angle-double-left"></i> 返回列表</a>
+                <span class="pl-2"><strong>添加或修改成员信息</strong></span>
+            </div>
+        </div>
+        <div class="border p-2 mb-2 bg-line-gradient-left">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-inline">
+                <label class="col-md-2">姓名</label>
+                <input class="col-md-2 form-control" th:field="*{name}"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">性别</label>
+                <select class="form-control" th:field="*{sex}">
+                    <option value="1">男</option>
+                    <option value="0">女</option>
+                </select>
+            </div>
+            <div class="form-inline" id="datetimepicker">
+                <label class="col-md-2">出生日期</label>
+                <input class="col-md-2 form-control" th:field="*{birthday}" placeholder="请选择出生日期" readonly required>
+                <span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">籍贯</label>
+                <select class="form-control" th:field="*{area.parentId}" onchange="showCities(this.value)">
+                    <option value="-1">请选择</option>
+                    <option th:each="province : ${provinces}" th:value="${province.id}"
+                            th:text="${province.name}"></option>
+                </select>
+                <select class="form-control" th:field="*{area.id}" id="city">
+                    <option value="-1">请选择</option>
+                    <option th:each=" city: ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+                </select>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">身高</label>
+                <input class="col-md-1 form-control" th:field="*{height}">
+                <span>厘米</span>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">体重</label>
+                <input class="col-md-1 form-control" th:field="*{weight}"/>
+                <span>公斤</span>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">身份证号</label>
+                <input class="col-md-4 form-control" th:field="*{idNumber}"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('idNumber')}" th:errors="*{idNumber}"></span>
+            </div>
+            <div class="form-inline">
+                <label class="col-md-2">医保卡号</label>
+                <input class="col-md-4 form-control" th:field="*{healthInsuranceNumber}"/>
+            </div>
+            <div class="form-inline mt-1">
+                <label class="col-md-2"></label>
+                <button class="btn btn-danger col-md-2" type="submit"><i class="fa fa-save"></i> 保存</button>
+                <button class="btn btn-secondary" type="reset"><i class="fa fa-refresh"></i> 重置</button>
+            </div>
+        </div>
+    </form>
+
+
+</section>
+<section layout:fragment="scripts_user">
+<script type="text/javascript">
+
+</script>
+</section>
+
+</body>
+
+</html>

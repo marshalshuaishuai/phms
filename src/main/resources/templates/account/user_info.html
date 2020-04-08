@@ -61,20 +61,7 @@
         </div>
     </form>
 </section>
-<section layout:fragment="scripts_user">
-    <script>
-        function showCities(parentId) {
-            $.ajax({
-                url: "/getCities",
-                data: {parentId: parentId},
-                success: function (data) {
-                    $("#city").html(data);
-                }
-            });
-        }
-    </script>
 
-</section>
 </body>
 
 </html>

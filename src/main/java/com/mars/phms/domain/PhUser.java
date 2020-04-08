@@ -23,11 +23,14 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_user")
 public class PhUser implements UserDetails{

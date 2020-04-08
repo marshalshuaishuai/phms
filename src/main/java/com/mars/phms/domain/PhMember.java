@@ -15,8 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -28,7 +31,9 @@ public class PhMember {
     private long id;
     @NotBlank(message = "姓名不能为空")
     private String name;
-    private char sex;
+    private Integer sex;
+    @NotNull(message = "请选择出生日期")
+    @DateTimeFormat(pattern = "yyyy/mm/dd")
     private Date birthday;
     private int height;
     private int weight;
