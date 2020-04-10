@@ -43,21 +43,31 @@ public class HomeController extends PhBaseController {
      * @return
      */
     @GetMapping("/memberManager")
-    public String toMemberManagerPage(@ModelAttribute("member") PhMember member,
-                                      Model model,
-                                      @RequestParam(value = "pageNum",defaultValue = "0") int pageNum,
-                                      @RequestParam(value = "pageSize",defaultValue = PhParam.PAGE_SIZE) int pageSize){
+    public String toMemberManagerPage(
+            //双向绑定模型参数，用于指定查询条件
+            @ModelAttribute("member") PhMember member,
+            //分页参数
+            @RequestParam(value = "pageNum",defaultValue = "0") int pageNum,
+            @RequestParam(value = "pageSize",defaultValue =PhParam.PAGE_DEFAULT_SIZE) int pageSize,
+            //返回页面的模型
+            Model model){
+        //得到当前用户
         PhUser user = (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //设置搜索条件
         member.setUser(user);
         ExampleMatcher matcher=ExampleMatcher.matching()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 .withIgnorePaths("id");
         Example<PhMember> memberExample=Example.of(member,matcher);
-        //List<PhMember> members=memberService.findAll(memberExample);
+        //如果用户输入的每页显示数据条数大于最大值或小于最小值，设置为默认值
+        if(pageSize<PhParam.PAGE_MIN_SIZE||pageSize>PhParam.PAGE_MAX_SIZE)
+            pageSize=Integer.valueOf(PhParam.PAGE_DEFAULT_SIZE);
+        //分页查找符合条件的记录
         Page<PhMember> members=memberService.findAllPaged(memberExample,pageNum,pageSize);
-
+        //将查找到的记录返回页面
         model.addAttribute("members",members);
-        model.addAttribute("member",member);
+        //将每页查询记录条数返回页面
+        model.addAttribute("pageSize",pageSize);
         return "/member_manager";
     }
 
@@ -68,7 +78,7 @@ public class HomeController extends PhBaseController {
         return "member_add_update";
     }
     @GetMapping("/memberUpdate")
-    public String toUpdateMemberPage( Model model, @RequestParam(name = "id") Long id){
+    public String toUpdateMemberPage(@RequestParam(name = "id") Long id, Model model){
         List<PhArea> provinces = areaService.getProvinces();
         PhMember member=memberService.findById(id);
         if(member.getArea()!=null){

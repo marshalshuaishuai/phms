@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -17,7 +19,8 @@ public class PhMedicalHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank(message = "生病日期不能为空")
+    @NotNull(message = "生病日期不能为空")
+    @DateTimeFormat(pattern = "yyyy/mm/dd")
     private Date illDate;
 
     @NotBlank(message = "病症不能为空")

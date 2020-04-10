@@ -10,4 +10,5 @@ public class Hint {
     public static final String CHANGE_PASSWORD_ERROR="change_password_error";
     public static final String CHANGED_PASSWORD_SUCCESS="changed_password_success";
     public static final String EMAIL_ERROR="email_error";
+    public static final String AREA_ERROR="area_error";
 }

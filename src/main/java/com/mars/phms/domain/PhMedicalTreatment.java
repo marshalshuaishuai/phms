@@ -1,9 +1,11 @@
 package com.mars.phms.domain;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class PhMedicalTreatment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank(message = "就诊日期不能为空")
+    @NotNull(message = "就诊日期不能为空")
+    @DateTimeFormat(pattern = "yyyy/mm/dd")
     private Date medicalDate;
     @NotBlank(message = "就诊医院不能为空")
     private String hospital;
@@ -28,7 +31,7 @@ public class PhMedicalTreatment {
     private String disease;
     @NotBlank(message = "诊断不能为空")
     private String diagnosis;
-    @NotBlank(message = "治疗情况不能为空")
+    @NotBlank(message = "治疗方案不能为空")
     private String treatment;
 
     //导航属性
