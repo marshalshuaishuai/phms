@@ -11,11 +11,12 @@
 
 <body>
 <section layout:fragment="content_user">
-    <form th:action="@{/memberManager}" th:object="${member}">
+    <form th:action="@{/memberManager}" th:object="${member}" id="form">
+        <input type="hidden" id="pageNum" name="pageNum">
         <div class="bg-light mb-2 p-2 border rounded">
             <div class="navbar-expand-sm">
                 <div class="navbar-collapse flex-sm-row-reverse">
-                    <a class="btn btn-success btn-sm rounded text-light" href="member.html" th:href="@{/memberAdd}"><i class="fa fa-plus "></i> 添加</a>
+                    <a class="btn btn-success btn-sm rounded text-light" href="member_add_update.html" th:href="@{/memberAdd}"><i class="fa fa-plus "></i> 添加</a>
                     <div class=" flex-grow-1 form-inline">
                         <span class=" btn btn-light" data-toggle="collapse" data-target="#search"><i class="fa fa-angle-double-down  mx-2 text-secondary"></i></span>
                         <input type="text" class="form-control rounded-pill mx-2 col-md-3" placeholder="搜索关键字" th:field="*{name}">
@@ -66,29 +67,36 @@
         <ul class="pagination pagination-sm pull-left">
             <!--首页-->
             <li class="page-item">
-                <a class="page-link" th:href="@{'/memberManager?pageNum=0'}">首页</a>
+                <a class="page-link text-muted" th:onclick="submit(0)" href="#">首页</a>
             </li>
             <!--上一页-->
             <li class="page-item" th:if="${members.hasPrevious()}">
-                <a class="page-link" th:href="@{'/memberManager?pageNum='+${members.previousPageable().getPageNumber()}}" th:text="上一页"></a>
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${members.previousPageable().getPageNumber()})|"  th:text="上一页"></a>
             </li>
             <!--中间页-->
             <li class="page-item" th:each="pageNum:${#numbers.sequence(0,members.getTotalPages()-1)}">
-                <a class="page-link" th:href="@{'memberManager?pageNum='+${pageNum}}" th:text="${pageNum+1}" th:if="${pageNum ne members.pageable.getPageNumber()}"></a>
-                <a class="page-link" th:href="@{'memberManager?pageNum='+${pageNum}}" th:text="${pageNum+1}" th:if="${pageNum eq members.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                <a class="page-link text-light bg-secondary" href="#" th:onclick="|submit(${pageNum})|" th:text="${pageNum+1}" th:if="${pageNum eq members.pageable.getPageNumber()}"></a>
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${pageNum})|"  th:text="${pageNum+1}" th:if="${pageNum ne members.pageable.getPageNumber() and pageNum gt -1}"></a>
             </li>
             <!--下一页-->
             <li class="page-item" th:if="${members.hasNext()}">
-                <a class="page-link" th:href="'/memberManager?pageNum=' + ${members.nextPageable().getPageNumber()}" th:text="下一页"></a>
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${members.nextPageable().getPageNumber()})|"  th:text="下一页"></a>
             </li>
             <!-- 尾页 -->
             <li class="page-item">
-                <a class="page-link" th:href="'/memberManager?pageNum=' + ${members.getTotalPages() - 1}">尾页</a>
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${members.getTotalPages()-1})|" >尾页</a>
             </li>
         </ul>
     </div>
 </section>
-
+<section layout:fragment="scripts_user">
+    <script>
+        function submit(pageNum) {
+            $('#pageNum').val(pageNum);
+            $('#form').submit();
+        }
+    </script>
+</section>
 </body>
 
 </html>

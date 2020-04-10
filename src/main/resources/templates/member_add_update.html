@@ -32,9 +32,9 @@
                     <option value="女">女</option>
                 </select>
             </div>
-            <div class="form-inline" id="datetimepicker">
+            <div class="form-inline">
                 <label class="col-md-2">出生日期</label>
-                <input class="col-md-2 form-control" th:field="*{birthday}" placeholder="请选择出生日期" readonly required>
+                <input class="col-md-2 form-control" th:field="*{birthday}" placeholder="请选择出生日期" id="datetimepicker" readonly required>
                 <span class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span>
             </div>
             <div class="form-inline">

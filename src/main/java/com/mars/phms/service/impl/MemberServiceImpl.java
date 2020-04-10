@@ -3,6 +3,7 @@ package com.mars.phms.service.impl;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.repository.MemberRepository;
 import com.mars.phms.service.MemberService;
+import com.mars.phms.vo.MemberRecentDiseaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -50,5 +51,10 @@ public class MemberServiceImpl implements MemberService {
         Pageable pageable= PageRequest.of(pageNum,pageSize,sort);
         Page<PhMember> members=memberRepository.findAll(memberExample,pageable);
         return members;
+    }
+
+    @Override
+    public List<MemberRecentDiseaseVo> findRecentDiseaseForMember(String username) {
+        return memberRepository.findRecentDiseaseForMember(username);
     }
 }

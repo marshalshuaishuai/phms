@@ -5,6 +5,7 @@ import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.MemberService;
+import com.mars.phms.vo.MemberRecentDiseaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -33,6 +34,14 @@ public class HomeController extends PhBaseController {
     }
 
 
+    /**
+     * 成员管理
+     * @param member
+     * @param model
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/memberManager")
     public String toMemberManagerPage(@ModelAttribute("member") PhMember member,
                                       Model model,
@@ -48,6 +57,7 @@ public class HomeController extends PhBaseController {
         Page<PhMember> members=memberService.findAllPaged(memberExample,pageNum,pageSize);
 
         model.addAttribute("members",members);
+        model.addAttribute("member",member);
         return "/member_manager";
     }
 
@@ -55,7 +65,7 @@ public class HomeController extends PhBaseController {
     public String toAddMemberPage(@ModelAttribute("member") PhMember member, Model model){
         List<PhArea> provinces = areaService.getProvinces();
         model.addAttribute("provinces",provinces);
-        return "/member";
+        return "member_add_update";
     }
     @GetMapping("/memberUpdate")
     public String toUpdateMemberPage( Model model, @RequestParam(name = "id") Long id){
@@ -67,12 +77,12 @@ public class HomeController extends PhBaseController {
         }
         model.addAttribute("provinces",provinces);
         model.addAttribute("member",member);
-        return "/member";
+        return "member_add_update";
     }
     @PostMapping("/member")
     public String doSaveMember(@ModelAttribute("member") @Validated PhMember member,BindingResult result){
         if(result.hasErrors()){
-            return "/member";
+            return "member_add_update";
         }
         PhUser user= (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         member.setUser(user);
@@ -85,5 +95,18 @@ public class HomeController extends PhBaseController {
     public String doDeleteMember(@RequestParam("id") long id){
         memberService.deleteMember(id);
         return "redirect:/memberManager";
+    }
+
+    /**
+     * 成员最近病史管理页面
+     * @param model
+     * @return
+     */
+    @GetMapping("memberMedicalHistoryIndex")
+    public String toMemberMedicalHistoryIndexPage(Model model){
+        String loggedInUserName=SecurityContextHolder.getContext().getAuthentication().getName();
+        List<MemberRecentDiseaseVo> memberRecentDiseaseVos =memberService.findRecentDiseaseForMember(loggedInUserName);
+        model.addAttribute("memberRecentDiseaseVos", memberRecentDiseaseVos);
+        return "member_medical_history_index";
     }
 }
