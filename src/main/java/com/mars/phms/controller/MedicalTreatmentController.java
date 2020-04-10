@@ -1,10 +1,8 @@
 package com.mars.phms.controller;
 
 import com.mars.phms.constant.PhParam;
-import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMedicalHistory;
 import com.mars.phms.domain.PhMedicalTreatment;
-import com.mars.phms.domain.PhMember;
 import com.mars.phms.service.MedicalHistoryService;
 import com.mars.phms.service.MedicalTreatmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author mars
@@ -61,7 +58,7 @@ public class MedicalTreatmentController {
         //将每页查询记录条数返回页面
         model.addAttribute("pageSize",pageSize);
         model.addAttribute("memberId",memberId);
-        return "/medical_history/member_medical_treatment_manager";
+        return "medical_history/member_medical_treatment_manager";
     }
 
     @GetMapping("/add")
@@ -72,7 +69,7 @@ public class MedicalTreatmentController {
             Model model){
         model.addAttribute("memberId",memberId);
         model.addAttribute("historyId",historyId);
-        return "/medical_history/member_medical_treatment_add_update";
+        return "medical_history/member_medical_treatment_add_update";
     }
 
     @GetMapping("/update")
@@ -85,7 +82,7 @@ public class MedicalTreatmentController {
         model.addAttribute("medicalTreatment",medicalTreatment);
         model.addAttribute("memberId",memberId);
         model.addAttribute("historyId",historyId);
-        return "/medical_history/member_medical_treatment_add_update";
+        return "medical_history/member_medical_treatment_add_update";
     }
 
     @PostMapping("/save")
@@ -95,7 +92,7 @@ public class MedicalTreatmentController {
             @ModelAttribute("medicalTreatment") @Validated PhMedicalTreatment medicalTreatment,
             BindingResult result){
         if(result.hasErrors()){
-            return "/medical_history/member_medical_treatment_add_update";
+            return "medical_history/member_medical_treatment_add_update";
         }
         PhMedicalHistory history=historyService.findById(historyId);
         medicalTreatment.setMedicalHistory(history);

@@ -68,7 +68,7 @@ public class MedicalHistoryController extends PhBaseController {
         }
         //将每页查询记录条数返回页面
         model.addAttribute("pageSize",pageSize);
-        return "/medical_history/member_medical_history_manager";
+        return "medical_history/member_medical_history_manager";
     }
 
     @GetMapping("/add")
@@ -83,7 +83,7 @@ public class MedicalHistoryController extends PhBaseController {
             model.addAttribute("cities",cities);
         }
         model.addAttribute("memberId",memberId);
-        return "/medical_history/member_medical_history_add_update";
+        return "medical_history/member_medical_history_add_update";
     }
 
     @GetMapping("/update")
@@ -100,7 +100,7 @@ public class MedicalHistoryController extends PhBaseController {
             List<PhArea> cities=areaService.getCities(medicalHistory.getArea().getParentId());
             model.addAttribute("cities",cities);
         }
-        return "/medical_history/member_medical_history_add_update";
+        return "medical_history/member_medical_history_add_update";
     }
 
     @PostMapping("/save")
@@ -118,10 +118,10 @@ public class MedicalHistoryController extends PhBaseController {
                 model.addAttribute("cities",cities);
             }
             model.addAttribute(Hint.AREA_ERROR,"请选择生病地点");
-            return "/medical_history/member_medical_history_add_update";
+            return "medical_history/member_medical_history_add_update";
         }
         if(result.hasErrors()){
-            return "/medical_history/member_medical_history_add_update";
+            return "medical_history/member_medical_history_add_update";
         }
         PhMember member=memberService.findById(memberId);
         medicalHistory.setMember(member);

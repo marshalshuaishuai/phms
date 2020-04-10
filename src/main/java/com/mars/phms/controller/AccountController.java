@@ -55,7 +55,7 @@ public class AccountController extends PhBaseController {
      */
     @GetMapping("/register")
     public String toRegisterPage(@ModelAttribute("user") PhUser user) {
-        return "/account/register";
+        return "account/register";
     }
 
     /**
@@ -67,15 +67,15 @@ public class AccountController extends PhBaseController {
     @PostMapping("/register")
     public String doRegister(@ModelAttribute("user") @Validated PhUser user, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
-            return "/account/register";
+            return "account/register";
         }
         String confirmPassword = request.getParameter("confirm_password");
         if (!StringUtils.equals(user.getPassword(), confirmPassword)) {
             request.setAttribute(Hint.CONFIRM_PASSWORD_ERROR, "两次密码不一致");
-            return "/account/register";
+            return "account/register";
         }
         if (!isValidateCodeValid(request))
-            return "/account/register";
+            return "account/register";
         user.setRegistDay(new Date());
         PhUser savedUser=userService.saveUser(user);
         //注册成功后将自己加入成员中
@@ -84,7 +84,7 @@ public class AccountController extends PhBaseController {
         member.setName("本人");
         member.setBirthday(new Date());
         memberService.saveMember(member);
-        return "/account/login";
+        return "account/login";
     }
 
     /**
@@ -124,7 +124,7 @@ public class AccountController extends PhBaseController {
      */
     @GetMapping("/login")
     public String toLoginPage() {
-        return "/account/login";
+        return "account/login";
     }
 
     /**
@@ -155,7 +155,7 @@ public class AccountController extends PhBaseController {
         UserRegisterInfo registerInfo = userService.getUserBasicInfo(username);
         model.addAttribute("registerInfo", registerInfo);
 
-        return "/account/user_info";
+        return "account/user_info";
     }
 
     /**
@@ -214,7 +214,7 @@ public class AccountController extends PhBaseController {
      */
     @GetMapping("/accessDenied")
     public String toAccessDeniedPage() {
-        return "/account/accessDenied";
+        return "account/accessDenied";
     }
 
     /**
@@ -224,7 +224,7 @@ public class AccountController extends PhBaseController {
      */
     @GetMapping("/changePassword")
     public String toChangePasswordPage() {
-        return "/account/change_password";
+        return "account/change_password";
     }
 
     @PostMapping("/changePassword")
@@ -246,7 +246,7 @@ public class AccountController extends PhBaseController {
                 request.setAttribute(Hint.CHANGE_PASSWORD_ERROR, "原密码不正确");
             }
         }
-        return "/account/change_password";
+        return "account/change_password";
     }
 
     /**
@@ -258,7 +258,7 @@ public class AccountController extends PhBaseController {
         String username=SecurityContextHolder.getContext().getAuthentication().getName();
         PhUser user=userService.findByName(username);
         model.addAttribute("email",user.getEmail());
-        return "/account/change_email";
+        return "account/change_email";
     }
 
     @PostMapping("/changeEmail")
@@ -268,10 +268,10 @@ public class AccountController extends PhBaseController {
         request.setAttribute("email",email_old);
         if(StringUtils.isEmpty(email)){
             request.setAttribute(Hint.EMAIL_ERROR,"请输入新邮箱地址");
-            return "/account/change_email";
+            return "account/change_email";
         }
         if(!isValidateCodeValid(request)){
-            return "/account/change_email";
+            return "account/change_email";
         }
         String username=SecurityContextHolder.getContext().getAuthentication().getName();
         userService.changeEmail(username,email);

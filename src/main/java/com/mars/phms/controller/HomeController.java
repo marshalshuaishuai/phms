@@ -68,7 +68,7 @@ public class HomeController extends PhBaseController {
         model.addAttribute("members",members);
         //将每页查询记录条数返回页面
         model.addAttribute("pageSize",pageSize);
-        return "/member_manager";
+        return "member_manager";
     }
 
     @GetMapping("/memberAdd")
