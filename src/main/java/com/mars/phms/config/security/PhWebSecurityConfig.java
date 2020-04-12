@@ -32,10 +32,10 @@ public class PhWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     private AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -63,7 +63,7 @@ public class PhWebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 自定义授权规则
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).authorizeRequests()
                 .antMatchers("/account/login", "/login", "/account/register",
-                        "/account/get-validate-code","/account/send-validate-code", "/css/**",
+                        "/account/getValidateCode","/account/sendValidateCode", "/css/**",
                         "/js/**", "/images/**", "/lib/**")
                 .permitAll().antMatchers("/", "/home").hasRole("USER").antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and().formLogin().loginPage("/account/login").loginProcessingUrl("/login")

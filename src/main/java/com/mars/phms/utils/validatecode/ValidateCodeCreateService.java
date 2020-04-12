@@ -1,14 +1,15 @@
 package com.mars.phms.utils.validatecode;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 @Service
 public class ValidateCodeCreateService {
+    Logger logger= LoggerFactory.getLogger(ValidateCodeCreateService.class);
     public ValidateCode createImageCode() {
         //图片宽度
         int width=80;

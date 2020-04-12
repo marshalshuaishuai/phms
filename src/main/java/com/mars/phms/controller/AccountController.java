@@ -6,16 +6,7 @@
  */
 package com.mars.phms.controller;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.mars.phms.constant.Hint;
-import com.mars.phms.domain.PhArea;
 import com.mars.phms.domain.PhMember;
 import com.mars.phms.domain.PhUser;
 import com.mars.phms.service.MemberService;
@@ -23,18 +14,25 @@ import com.mars.phms.service.UserService;
 import com.mars.phms.utils.email.EmailService;
 import com.mars.phms.utils.validatecode.ValidateCode;
 import com.mars.phms.utils.validatecode.ValidateCodeCreateService;
-
 import com.mars.phms.vo.UserRegisterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/account")
@@ -47,6 +45,8 @@ public class AccountController extends PhBaseController {
     private EmailService emailService;
     @Autowired
     private MemberService memberService;
+
+    Logger logger= LoggerFactory.getLogger(AccountController.class);
 
     /**
      * 用户注册页面
@@ -178,11 +178,18 @@ public class AccountController extends PhBaseController {
      * @param response
      * @throws IOException
      */
-    @GetMapping("/get-validate-code")
+    @GetMapping("/getValidateCode")
     public void getValidateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.info("准备生成验证码");
         ValidateCode validateCode = validateCodeService.createImageCode();
+        logger.info("验证码创建成功");
         request.getSession().setAttribute("validate_code", validateCode);
+        //以下方法不能在Linux中显示图片验证码
         ImageIO.write(validateCode.getImage(), "JPEG", response.getOutputStream());
+        //可在Linux下显示
+//        JPEGImageEncoder encoder= JPEGCodec.createJPEGEncoder(response.getOutputStream());
+//        encoder.encode(validateCode.getImage());
+        logger.info("成功生成验证码");
     }
 
     /**
@@ -190,7 +197,7 @@ public class AccountController extends PhBaseController {
      * @param request
      * @return
      */
-    @GetMapping("/send-validate-code")
+    @GetMapping("/sendValidateCode")
     @ResponseBody
     public String sendValidateCode(HttpServletRequest request) {
         try {

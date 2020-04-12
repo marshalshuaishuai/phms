@@ -90,8 +90,14 @@ public class HomeController extends PhBaseController {
         return "member_add_update";
     }
     @PostMapping("/member")
-    public String doSaveMember(@ModelAttribute("member") @Validated PhMember member,BindingResult result){
+    public String doSaveMember(@ModelAttribute("member") @Validated PhMember member,BindingResult result,Model model){
         if(result.hasErrors()){
+            List<PhArea> provinces = areaService.getProvinces();
+            if(member.getArea()!=null&&member.getArea().getParentId()!=-1){
+                List<PhArea> cities=areaService.getCities(member.getArea().getParentId());
+                model.addAttribute("cities",cities);
+            }
+            model.addAttribute("provinces",provinces);
             return "member_add_update";
         }
         PhUser user= (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

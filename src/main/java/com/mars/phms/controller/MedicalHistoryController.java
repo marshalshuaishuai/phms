@@ -121,6 +121,12 @@ public class MedicalHistoryController extends PhBaseController {
             return "medical_history/member_medical_history_add_update";
         }
         if(result.hasErrors()){
+            List<PhArea> provinces=areaService.getProvinces();
+            model.addAttribute("provinces",provinces);
+            if(medicalHistory.getArea().getParentId()!=-1){
+                List<PhArea> cities=areaService.getCities(medicalHistory.getArea().getParentId());
+                model.addAttribute("cities",cities);
+            }
             return "medical_history/member_medical_history_add_update";
         }
         PhMember member=memberService.findById(memberId);

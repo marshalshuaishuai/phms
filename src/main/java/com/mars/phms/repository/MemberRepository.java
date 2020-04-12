@@ -14,9 +14,8 @@ import java.util.List;
  */
 public interface MemberRepository extends JpaRepository<PhMember,Long> {
     List<PhMember> findByUserId(long uId);
-//    @Query("select new com.mars.phms.vo.MemberRecentDiseaseVo(m.id,m.name,m.birthday,m.name,m.name) from " +
-//            "PhUser u,PhMember m where u.id=m.user.id and u.username=:name")
-@Query("select new com.mars.phms.vo.MemberRecentDiseaseVo(m.id,m.name,m.birthday,m.name,m.name) from " +
-        "PhMember m where m.user.username=:name")
+
+    @Query("select new com.mars.phms.vo.MemberRecentDiseaseVo(m.id,m.name,h.illDate,a.name,h.disease) from " +
+        "PhMember m left join m.medicalHistories h left join h.area a where m.user.username=:name group by m.id")
     List<MemberRecentDiseaseVo> findRecentDiseaseForMember(@Param("name") String username);
 }

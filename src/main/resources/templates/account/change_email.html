@@ -52,7 +52,7 @@
                 return;
             }
             $.ajax({
-                url:"/account/send-validate-code",
+                url:"/account/sendValidateCode",
                 data:{to:email.val()},
                 success:function (msg) {
                     alert(msg);

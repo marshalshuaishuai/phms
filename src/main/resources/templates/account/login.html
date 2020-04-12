@@ -40,7 +40,7 @@
 				<div class="row form-inline">
 					<label class="col-md-2" for="validate_code">验证码</label> <input type="text"
 						class="form-control col-md-3 mr-1 border-top-0" name="validate_code" id="validate_code"> <img
-						src="get-validate-code" title="看不清？请点我！" alt="验证码" onclick="refresh(this)">
+						src="getValidateCode" title="看不清？请点我！" alt="验证码" onclick="refresh(this)">
 				</div>
 	
 				<div class="row form-inline mt-1">
@@ -72,7 +72,7 @@
 	<section layout:fragment="scripts">
 		<script type="text/javascript">
 			function refresh(obj) {
-				obj.src="get-validate-code";
+				obj.src="getValidateCode";
 			}
 		</script>
 	</section>
