@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorate="~{layout_main.html}">
+
+<head>
+    <title>主页</title>
+</head>
+
+<body>
+    <section layout:fragment="content" class="v-100 h-100">
+        <header class="admin-header">
+            <nav class="navbar navbar-light bg-line-gradient-top navbar-expand-sm border-bottom fixed-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand"><img src="images/logo.png">个人健康管理系统 </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link"><i class="fa fa-user-circle"></i> <span th:text="${username}">user</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/account/logout"><i class="fa fa-sign-out"></i>退出系统</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                               
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!--主体-->
+        <div class="container-fluid admin-body">
+            <div class="row h-100">
+                <!--左侧菜单-->
+                <div class="col-md-2 h-100 overflow-auto p-1 border-right">
+                    <div class="admin-menu rounded-top">
+                        <div class="admin-menu-title text-center bg-light rounded-top pt-2 pb-1">
+                            <h5 class="mt-1 text-muted">功能菜单</h5>
+                        </div>
+                        <div class="admin-menu-body bg-secondary">
+                            <div>
+                                <h5 class="btn bg-line-gradient-right w-100 py-2 border rounded-top mb-1 mt-1" data-toggle="collapse" data-target="#demo1">
+                                    <i class="fa fa-hospital-o fa-fw"></i> 病史数据管理
+                                </h5>
+                                <ul class="admin-menu-item collapse px-0 mb-1" id="demo1">
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 病史数据查询统计</a>
+                                    </li>
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 病史数据管理</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="btn bg-line-gradient-right w-100 py-2 border rounded-top mb-1" data-toggle="collapse" data-target="#demo2">
+                                    <i class="fa fa-heartbeat fa-fw"></i> 健康指标管理
+                                </h5>
+                                <ul class="admin-menu-item collapse px-0 mb-1" id="demo2">
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 指标变化趋势分析</a>
+                                    </li>
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 健康指标管理</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="btn bg-line-gradient-right w-100 py-2 border rounded-top mb-1" data-toggle="collapse" data-target="#demo3">
+                                    <i class="fa fa-id-card fa-fw"></i> 基本信息管理
+                                </h5>
+                                <ul class="admin-menu-item collapse px-0 mb-1" id="demo3">
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 个人信息管理</a>
+                                    </li>
+                                    <li class="nav-link border-bottom text-light bg-light">
+                                        <a class="d-block" href="#"><i class="fa fa-angle-double-right"></i> 成员管理</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右侧主体-->
+                <div class="col-md-10 h-100 overflow-auto p-1">
+                    <div class="border rounded bg-light">
+                        <img class="w-100" src="images/chart.png">
+        
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <!--底部-->
+        <footer class="navbar border-top bg-line-gradient-bottom admin-footer" >
+            <span>PersonalHealthManageSystem - CopyRight &copy;2020</span>
+        </footer>
+    </section>
+</body>
+
+</html>

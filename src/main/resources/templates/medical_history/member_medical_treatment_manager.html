@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/layout_user.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病史管理</title>
+</head>
+
+<body>
+<section layout:fragment="content_user">
+    <form th:action="@{/medicalTreatment}" th:object="${medicalTreatment}" id="form">
+        <input type="hidden" name="memberId" th:value="${memberId}">
+        <input type="hidden" name="historyId" th:value="${historyId}">
+        <input type="hidden" id="pageNum" name="pageNum">
+        <div class="bg-light mb-2 p-2 border rounded">
+            <div class="navbar-expand-sm">
+                <div class="form-inline mb-3">
+                    <a class="btn btn-light" href="../member_manager.html" th:href="@{'/medicalHistory?memberId='+${memberId}}"><i class="fa fa-angle-double-left"></i> 返回</a>
+                    <span><strong th:text="${'['+#dates.format(history.illDate,'yyyy/mm/dd')}+' '+${history.area.name}+']-- '+${history.disease.length()>40?#strings.substring(history.disease,0,40):history.disease}"></strong></span>
+                </div>
+
+                <div class="navbar-collapse flex-sm-row-reverse">
+                    <a class="btn btn-success btn-sm rounded text-light" href="../member_add_update.html" th:href="@{'/medicalTreatment/add?historyId='+${historyId}+'&memberId='+${memberId}}"><i class="fa fa-plus "></i> 添加</a>
+
+                    <div class=" flex-grow-1 form-inline">
+                        <span class=" btn btn-light" data-toggle="collapse" data-target="#search"><i class="fa fa-angle-double-down  mx-2 text-secondary"></i></span>
+                        <input type="text" class="form-control rounded-pill mx-2 col-md-3" placeholder="诊断结果关键字" th:field="*{diagnosis}">
+                        <span>每页</span><input type="number" style="width: 35px;" class="form-control form-control-sm rounded-pill text-center p-0" name="pageSize" th:value="${pageSize}" maxlength="3"><span>条</span>
+                        <button type="submit" class="btn btn-secondary btn-sm rounded ml-1"><i class="fa fa-search "></i> 搜索</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="collapse border p-2 mb-2 bg-light" id="search">
+            <div class="form-inline"  >
+                <label class="col-md-2">就诊日期</label>
+                <input type="text" class="form-control datetimepicker" placeholder="请选择开始日期" name="dateFrom" readonly>
+                <label>-</label>
+                <input type="text" class="form-control datetimepicker" placeholder="请选择结束日期" name="dateTo" readonly>
+            </div>
+            <div class="form-inline mt-1">
+                <label class="col-md-2">就诊医院</label>
+                <input type="text" class="form-control" th:field="*{hospital}">
+            </div>
+            <div class="form-inline mt-1">
+                <label class="col-md-2">主治医生</label>
+                <input type="text" class="form-control" th:field="*{attendingDoctor}">
+            </div>
+            <div class="form-inline mt-1">
+                <label class="col-md-2">病症</label>
+                <input type="text" class="form-control" th:field="*{disease}">
+            </div>
+            <div class="form-inline mt-1">
+                <label class="col-md-2">治疗方案</label>
+                <input type="text" class="form-control" th:field="*{treatment}">
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-bordered text-center">
+        <thead class="text-light">
+        <tr >
+            <th class="table-col-order-no">序号</th>
+            <th>就诊日期</th>
+            <th>就诊医院</th>
+            <th>主治医生</th>
+            <th>疾病症状</th>
+            <th>诊断</th>
+            <th>治疗方案</th>
+            <th class="table-col-operate">操作</th>
+        </tr>
+        </thead>
+        <tbody class="bg-light ">
+            <tr th:each="treatment:${medicalTreatments}">
+                <td th:text="${medicalTreatments.getContent().indexOf(treatment)+1}">1</td>
+                <td th:text="${#dates.format(treatment.medicalDate,'yyyy/m/d')}">就诊日期</td>
+                <td th:text="${treatment.hospital}">就诊医院</td>
+                <td th:text="${treatment.attendingDoctor}">主治医生</td>
+                <td th:text="${treatment.disease}">疾病症状</td>
+                <td th:text="${treatment.diagnosis}">诊断</td>
+                <td th:text="${treatment.treatment}">治疗方案</td>
+                <td>
+                    <a class="btn btn-success btn-sm rounded text-light" th:href="@{'/medicalTreatment/update?id='+${treatment.id}+'&historyId='+${historyId}+'&memberId='+${memberId}}">修改</a>
+                    <a class="btn btn-danger btn-sm rounded text-light" th:href="@{'/medicalTreatment/delete?id='+${treatment.id}+'&historyId='+${historyId}+'&memberId='+${memberId}}" onclick="return confirm('您确定要删除此治疗情况吗？')">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--分页-->
+    <div class="text-center">
+        <ul class="pagination pagination-sm pull-left">
+            <!--首页-->
+            <li class="page-item">
+                <a class="page-link text-muted" th:onclick="submit(0)" href="#">首页</a>
+            </li>
+            <!--上一页-->
+            <li class="page-item" th:if="${medicalTreatments.hasPrevious()}">
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${medicalTreatments.previousPageable().getPageNumber()})|"  th:text="上一页"></a>
+            </li>
+            <!--中间页-->
+            <li class="page-item" th:each="pageNum:${#numbers.sequence(0,medicalTreatments.getTotalPages()-1)}">
+                <a class="page-link text-light bg-secondary" href="#" th:onclick="|submit(${pageNum})|" th:text="${pageNum+1}" th:if="${pageNum eq medicalTreatments.pageable.getPageNumber()}"></a>
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${pageNum})|"  th:text="${pageNum+1}" th:if="${pageNum ne medicalTreatments.pageable.getPageNumber() and pageNum gt -1}"></a>
+            </li>
+            <!--下一页-->
+            <li class="page-item" th:if="${medicalTreatments.hasNext()}">
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${medicalTreatments.nextPageable().getPageNumber()})|"  th:text="下一页"></a>
+            </li>
+            <!-- 尾页 -->
+            <li class="page-item">
+                <a class="page-link text-muted" href="#" th:onclick="|submit(${medicalTreatments.getTotalPages()-1})|" >尾页</a>
+            </li>
+        </ul>
+    </div>
+</section>
+<section layout:fragment="scripts_user">
+    <script>
+        function submit(pageNum) {
+            $('#pageNum').val(pageNum);
+            $('#form').submit();
+        }
+    </script>
+</section>
+</body>
+
+</html>
