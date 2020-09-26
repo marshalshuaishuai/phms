@@ -24,7 +24,7 @@ public class MedicalTreatmentServiceImpl implements MedicalTreatmentService {
 
     @Override
     public Page<PhMedicalTreatment> findAllPaged(Example<PhMedicalTreatment> medicalTreatmentExample, int pageNum, int pageSize) {
-        Sort sort=Sort.by(Sort.Direction.DESC,"id");
+        Sort sort=Sort.by(Sort.Direction.ASC,"medicalDate");
         Pageable pageable= PageRequest.of(pageNum,pageSize,sort);
         return medicalTreatmentRepository.findAll(medicalTreatmentExample,pageable);
     }

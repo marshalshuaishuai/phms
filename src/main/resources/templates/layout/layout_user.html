@@ -13,7 +13,7 @@
             <header class="admin-header">
                 <nav class="navbar navbar-light bg-line-gradient-top navbar-expand-sm border-bottom fixed-top">
                     <div class="container-fluid">
-                        <a class="navbar-brand"><img src="../../static/images/logo.png" th:src="@{images/logo.png}">
+                        <a class="navbar-brand"><img src="../../static/images/logo.png" th:src="@{/images/logo.png}">
                             个人健康管理系统
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -31,7 +31,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/account/logout"><i class="fa fa-sign-out"></i>退出系统
+                                    <a class="nav-link" href="/account/logout" th:href="@{/account/logout}"><i class="fa fa-sign-out"></i>退出系统
                                     </a>
                                 </li>
                             </ul>
@@ -51,7 +51,7 @@
                     <div class="col-md-2 h-100 overflow-auto p-1 border-right">
                         <div class="admin-menu rounded-top">
                             <div class="admin-menu-title text-center bg-light rounded-top pt-2 pb-1">
-                                <h5 class="mt-1 text-muted">功能菜单</h5>
+                                <h4 class="mt-2 text-dark">功能菜单</h4>
                             </div>
                             <div class="admin-menu-body bg-secondary">
                                 <div>
