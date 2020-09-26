@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout_main.html}">
 
     <head>
-        <title>主页</title>
+        <title>健康信息管理</title>
     </head>
 
     <body>
@@ -69,7 +69,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-link border-bottom text-light bg-light">
-                                            <a class="d-block" href="#" th:href="@{/memberMedicalHistoryIndex}">
+                                            <a class="d-block" href="#" th:href="@{/memberMedicalHistoryIndex}" target="mainFrame">
                                                 <i class="fa fa-angle-double-right"></i>
                                                 病史数据管理
                                             </a>
@@ -105,28 +105,28 @@
                                     </h5>
                                     <ul class="admin-menu-item collapse px-0 mb-1" id="demo3">
                                         <li class="nav-link border-bottom text-light bg-light">
-                                            <a class="d-block" href="#" th:href="@{/account/userInfo}">
+                                            <a class="d-block" href="#" th:href="@{/account/userInfo}" target="mainFrame">
                                                 <i
                                                         class="fa fa-angle-double-right"></i>
                                                 注册信息更新
                                             </a>
                                         </li>
                                         <li class="nav-link border-bottom text-light bg-light">
-                                            <a class="d-block" href="#" th:href="@{/account/changePassword}">
+                                            <a class="d-block" href="#" th:href="@{/account/changePassword}" target="mainFrame">
                                                 <i
                                                         class="fa fa-angle-double-right"></i>
                                                 修改密码
                                             </a>
                                         </li>
                                         <li class="nav-link border-bottom text-light bg-light">
-                                            <a class="d-block" href="#" th:href="@{/account/changeEmail}">
+                                            <a class="d-block" href="#" th:href="@{/account/changeEmail}" target="mainFrame">
                                                 <i
                                                         class="fa fa-angle-double-right"></i>
                                                 变更邮箱
                                             </a>
                                         </li>
                                         <li class="nav-link border-bottom text-light bg-light">
-                                            <a class="d-block" href="#" th:href="@{/memberManager}">
+                                            <a class="d-block" href="#" th:href="@{/memberManager}" target="mainFrame">
                                                 <i class="fa fa-angle-double-right"></i>
                                                 成员管理
                                             </a>
@@ -138,9 +138,8 @@
                     </div>
                     <!--右侧主体-->
                     <div class="col-md-10 h-100 overflow-auto p-1">
-                        <section layout:fragment="content_user">
+                        <iframe id="mainFrame" name="mainFrame" src="../index.html" th:src="@{/}" width="100%" height="100%" frameborder="0"></iframe>
 
-                        </section>
                     </div>
                 </div>
 
@@ -149,11 +148,6 @@
             <footer class="navbar border-top bg-line-gradient-bottom admin-footer">
                 <span>PersonalHealthManageSystem - CopyRight &copy;2020</span>
             </footer>
-        </section>
-        <section layout:fragment="scripts">
-            <section layout:fragment="scripts_user">
-
-            </section>
         </section>
 
     </body>

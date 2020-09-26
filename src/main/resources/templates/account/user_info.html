@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      layout:decorate="~{layout/layout_user.html}">
+      layout:decorate="~{layout/layout_main.html}">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<section layout:fragment="content_user">
+<section layout:fragment="content">
     <form th:action="@{/account/saveUserInfo}" method="post" th:object="${registerInfo}">
         <div class="bg-light mb-2 p-2 border rounded">
             <div class="form-inline">

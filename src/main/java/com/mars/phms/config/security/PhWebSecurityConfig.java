@@ -60,6 +60,8 @@ public class PhWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         PhValidateCodeFilter validateCodeFilter = new PhValidateCodeFilter();
+        //取消限制IFRAME使用
+        http.headers().frameOptions().disable();
         // 自定义授权规则
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class).authorizeRequests()
                 .antMatchers("/account/login", "/login", "/account/register",
