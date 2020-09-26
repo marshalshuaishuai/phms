@@ -141,11 +141,10 @@ a.navbar-brand {
     height: 60px;
 }
 
-table thead{
+table thead tr th{
     background-color: grey;
-}
-table thead tr{
-    height: 70px;
+    height: 60px;
+    vertical-align: middle !important;
 }
 
 .table-col-order-no{
