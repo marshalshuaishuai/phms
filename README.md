@@ -1,7 +1,7 @@
 # phms
 一个免费开源的个人健康信息管理系统
 
-
+## application.properties配置
 spring.datasource.url=jdbc:mysql://your_server:3306/PhmsDb?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
 spring.datasource.username=your_username
 spring.datasource.password=your_password
