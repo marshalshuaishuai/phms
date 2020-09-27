@@ -68,14 +68,14 @@ public class HomeController extends PhBaseController {
         model.addAttribute("members",members);
         //将每页查询记录条数返回页面
         model.addAttribute("pageSize",pageSize);
-        return "member_manager";
+        return "account/member_manager";
     }
 
     @GetMapping("/memberAdd")
     public String toAddMemberPage(@ModelAttribute("member") PhMember member, Model model){
         List<PhArea> provinces = areaService.getProvinces();
         model.addAttribute("provinces",provinces);
-        return "member_add_update";
+        return "account/member_add_update";
     }
     @GetMapping("/memberUpdate")
     public String toUpdateMemberPage(@RequestParam(name = "id") Long id, Model model){
@@ -87,7 +87,7 @@ public class HomeController extends PhBaseController {
         }
         model.addAttribute("provinces",provinces);
         model.addAttribute("member",member);
-        return "member_add_update";
+        return "account/member_add_update";
     }
     @PostMapping("/member")
     public String doSaveMember(@ModelAttribute("member") @Validated PhMember member,BindingResult result,Model model){
@@ -98,7 +98,7 @@ public class HomeController extends PhBaseController {
                 model.addAttribute("cities",cities);
             }
             model.addAttribute("provinces",provinces);
-            return "member_add_update";
+            return "account/member_add_update";
         }
         PhUser user= (PhUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         member.setUser(user);
@@ -123,6 +123,6 @@ public class HomeController extends PhBaseController {
         String loggedInUserName=SecurityContextHolder.getContext().getAuthentication().getName();
         List<MemberRecentDiseaseVo> memberRecentDiseaseVos =memberService.findRecentDiseaseForMember(loggedInUserName);
         model.addAttribute("memberRecentDiseaseVos", memberRecentDiseaseVos);
-        return "member_medical_history_index";
+        return "medical_history/member_medical_history_index";
     }
 }

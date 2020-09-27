@@ -5,7 +5,7 @@
 <head>
 <title>登录</title>
 </head>
-<body>
+<body onload="loadTopWindow()">
 	<section  layout:fragment="content"  class="d-flex h-100 w-100 align-items-center">
 		<form class="form-login container h-50 " th:action="@{/login}" 
 		method="post">
@@ -73,6 +73,15 @@
 		<script type="text/javascript">
 			function refresh(obj) {
 				obj.src="getValidateCode";
+			}
+
+			//判断当前窗口是否有顶级窗口，如果有就让浏览器的地址栏发生变化
+			//这样就可以让登陆窗口显示在整个浏览器中了
+			//避免登录窗口仅显示在iframe中的现象
+			function loadTopWindow(){
+				if (window.top!=null && window.top.document.URL!=document.URL){
+					window.top.location= document.URL;
+				}
 			}
 		</script>
 	</section>

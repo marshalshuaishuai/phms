@@ -13,8 +13,8 @@
 <section layout:fragment="content">
     <form th:action="@{/medicalHistory/save}" th:object="${medicalHistory}"  method="post">
         <div class="bg-light mb-2 p-2 border rounded">
-            <div class="form-inline">
-                <a class="btn btn-light" href="../member_manager.html" th:href="@{'/medicalHistory?memberId='+${memberId}}"><i class="fa fa-angle-double-left"></i> 返回列表</a>
+            <div class="form-inline search-info-bar">
+                <a class="btn btn-light" href="../account/member_manager.html" th:href="@{'/medicalHistory?memberId='+${memberId}}"><i class="fa fa-angle-double-left"></i> 返回列表</a>
                 <span class="pl-2"><strong>添加或修改病史信息</strong></span>
             </div>
         </div>

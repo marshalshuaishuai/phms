@@ -16,14 +16,14 @@
         <input type="hidden" name="historyId" th:value="${historyId}">
         <input type="hidden" id="pageNum" name="pageNum">
         <div class="bg-light mb-2 p-2 border rounded">
-            <div class="navbar-expand-sm">
+            <div class="navbar-expand-sm search-info-bar">
                 <div class="form-inline mb-3">
-                    <a class="btn btn-light" href="../member_manager.html" th:href="@{'/medicalHistory?memberId='+${memberId}}"><i class="fa fa-angle-double-left"></i> 返回</a>
+                    <a class="btn btn-light" href="../account/member_manager.html" th:href="@{'/medicalHistory?memberId='+${memberId}}"><i class="fa fa-angle-double-left"></i> 返回</a>
                     <span><strong th:text="${'['+#dates.format(history.illDate,'yyyy/mm/dd')}+' '+${history.area.name}+']-- '+${history.disease.length()>40?#strings.substring(history.disease,0,40):history.disease}"></strong></span>
                 </div>
 
                 <div class="navbar-collapse flex-sm-row-reverse">
-                    <a class="btn btn-success btn-sm rounded text-light" href="../member_add_update.html" th:href="@{'/medicalTreatment/add?historyId='+${historyId}+'&memberId='+${memberId}}"><i class="fa fa-plus "></i> 添加</a>
+                    <a class="btn btn-success btn-sm rounded text-light" href="../account/member_add_update.html" th:href="@{'/medicalTreatment/add?historyId='+${historyId}+'&memberId='+${memberId}}"><i class="fa fa-plus "></i> 添加</a>
 
                     <div class=" flex-grow-1 form-inline">
                         <span class=" btn btn-light" data-toggle="collapse" data-target="#search"><i class="fa fa-angle-double-down  mx-2 text-secondary"></i></span>
