@@ -1,9 +1,13 @@
 function showCities(parentId) {
     $.ajax({
-        url: "/getCities",
+        url: '/phms/getCities',
         data: {parentId: parentId},
         success: function (data) {
             $("#city").html(data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            //alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            alert(XMLHttpRequest.status);
         }
     });
 }
