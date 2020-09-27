@@ -32,8 +32,13 @@ a {
     color: grey;
 }
 a:hover{
-    color: red;
+    color: grey;
     text-decoration: none;/*去掉下划线*/
+    transition: all .5s;
+}
+
+.admin-menu .nav-link:hover,.admin-menu .nav-link.active{
+    border-left: 15px solid green;
     transition: all .5s;
 }
 
@@ -155,6 +160,10 @@ table thead tr th{
     width: 15%;
 }
 
+iframe{
+    width: 100%;
+    height: calc(100% - 6px);
+}
 .datetimepicker{
 
 }
