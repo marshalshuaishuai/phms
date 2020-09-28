@@ -41,7 +41,7 @@ public class PhValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if(StringUtils.equals("/login", request.getRequestURI())&&StringUtils.equalsIgnoreCase(request.getMethod(), "post")){
+        if(StringUtils.equals("/phms/login", request.getRequestURI())&&StringUtils.equalsIgnoreCase(request.getMethod(), "post")){
             try {
                 validate(request);
             } catch (ValidateCodeException e) {

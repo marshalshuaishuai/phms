@@ -5,14 +5,14 @@
 :root{
     --border-color:#e5e5e5;
     --background-color:#d7d7d7;
-    --primary-color: #fefefe;
+    --gradient-to-color: #fefefe;
 }
 html,body {
     height: 100%;
 }
 
 body {
-    background-color:#d7d7d7;
+    background-color:var(--background-color);
 }
 
 /* 全局字体大小
@@ -88,42 +88,29 @@ a.navbar-brand {
 
 /*登录页面*******************************************************************/
 .form-login {
-
     /*当background-image不支持时，使用background-color*/
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to right, var(--background-color), var(--primary-color), var(--background-color));
-    -moz-background-image: linear-gradient(to right, var(--background-color), var(--primary-color), var(--background-color));
-    -o-background-image: linear-gradient(to right, var(--background-color), var(--primary-color), var(--background-color));
-    -webkit-background-image: linear-gradient(to right, var(--background-color), var(--primary-color), var(--background-color));
+    background-color: var(--gradient-to-color);
+    background-image: linear-gradient(to right, var(--background-color), var(--gradient-to-color), var(--background-color));
+    /*-moz-background-image: linear-gradient(to right, var(--background-color), var(--gradient-to-color), var(--background-color));*/
+    /*-o-background-image: linear-gradient(to right, var(--background-color), var(--gradient-to-color), var(--background-color));*/
+    /*-webkit-background-image: linear-gradient(to right, var(--background-color), var(--gradient-to-color), var(--background-color));*/
 }
 
 .bg-line-gradient-right{
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to right, var(--primary-color), var(--background-color));
-    -moz-background-image: linear-gradient(to right, var(--primary-color), var(--background-color));
-    -o-background-image: linear-gradient(to right,  var(--primary-color), var(--background-color));
-    -webkit-background-image: linear-gradient(to right,  var(--primary-color), var(--background-color));
+    background-color: var(--gradient-to-color);
+    background-image: linear-gradient(to right, var(--gradient-to-color), var(--background-color));
 }
 .bg-line-gradient-left{
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to left, var(--primary-color), var(--background-color));
-    -moz-background-image: linear-gradient(to left, var(--primary-color), var(--background-color));
-    -o-background-image: linear-gradient(to left,  var(--primary-color), var(--background-color));
-    -webkit-background-image: linear-gradient(to left,  var(--primary-color), var(--background-color));
+    background-color: var(--gradient-to-color);
+    background-image: linear-gradient(to left, var(--gradient-to-color), var(--background-color));
 }
 .bg-line-gradient-top{
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to top, var(--primary-color), var(--background-color));
-    -moz-background-image: linear-gradient(to top, var(--primary-color), var(--background-color));
-    -o-background-image: linear-gradient(to top,  var(--primary-color), var(--background-color));
-    -webkit-background-image: linear-gradient(to top,  var(--primary-color), var(--background-color));
+    background-color: var(--gradient-to-color);
+    background-image: linear-gradient(to top, var(--gradient-to-color), var(--background-color));
 }
 .bg-line-gradient-bottom{
-    background-color: var(--primary-color);
-    background-image: linear-gradient(to bottom, var(--primary-color), var(--background-color));
-    -moz-background-image: linear-gradient(to bottom, var(--primary-color), var(--background-color));
-    -o-background-image: linear-gradient(to bottom,  var(--primary-color), var(--background-color));
-    -webkit-background-image: linear-gradient(to bottom,  var(--primary-color), var(--background-color));
+    background-color: var(--gradient-to-color);
+    background-image: linear-gradient(to bottom, var(--gradient-to-color), var(--background-color));
 }
 
 
@@ -137,7 +124,7 @@ a.navbar-brand {
     height: 40px;
 }
 .admin-menu-item .nav-link{
-    background-color: #d7d7d7;
+    background-color: var(--background-color);
 }
 
 .admin-menu-title{
