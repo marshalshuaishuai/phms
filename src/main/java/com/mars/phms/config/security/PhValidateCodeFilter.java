@@ -58,7 +58,7 @@ public class PhValidateCodeFilter extends OncePerRequestFilter {
         ValidateCode codeInSession= (ValidateCode) request.getSession().getAttribute("validate_code");
 
         if(StringUtils.isEmpty(codeInRequest)){
-            throw new ValidateCodeException("验证码不能为空");
+            throw new ValidateCodeException("请填写验证码");
         }
         if(codeInSession==null){
             throw new ValidateCodeException("验证码不存在");
@@ -67,7 +67,7 @@ public class PhValidateCodeFilter extends OncePerRequestFilter {
             throw new ValidateCodeException("验证码已过期");
         }
         if(!StringUtils.equals(codeInSession.getCode(), codeInRequest)){
-            throw new ValidateCodeException("验证码不匹配");
+            throw new ValidateCodeException("验证码不正确");
         }
         request.getSession().removeAttribute("validate_code");
     }

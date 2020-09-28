@@ -115,10 +115,10 @@ a.navbar-brand {
 
 
 .admin-header,.admin-header nav{
-    height: 70px;
+    height: 60px;
 }
 .admin-body{
-    height: calc(100% - 110px);
+    height: calc(100% - 100px);
 }
 .admin-footer{
     height: 40px;

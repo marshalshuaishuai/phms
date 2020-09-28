@@ -180,9 +180,9 @@ public class AccountController extends PhBaseController {
      */
     @GetMapping("/getValidateCode")
     public void getValidateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.info("准备生成验证码");
+        //logger.info("准备生成验证码");
         ValidateCode validateCode = validateCodeService.createImageCode();
-        logger.info("验证码创建成功");
+        //logger.info("验证码创建成功");
         request.getSession().setAttribute("validate_code", validateCode);
         //以下方法不能在Linux中显示图片验证码
         ImageIO.write(validateCode.getImage(), "JPEG", response.getOutputStream());
