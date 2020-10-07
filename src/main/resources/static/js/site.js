@@ -21,16 +21,18 @@ function showCities(parentId) {
 //     });
 // });
 
-$('#datetimepicker').datepicker({
+$('#datetimepicker,.datetimepicker').datepicker({
     language: 'zh-CN', //语言
     autoclose: true, //选择后自动关闭
     clearBtn: true,//清除按钮
+    todayBtn:true,
+    todayHighlight:true,
     format: "yyyy/mm/dd"//日期格式
 });
 
-$('.datetimepicker').datepicker({
-    language: 'zh-CN', //语言
-    autoclose: true, //选择后自动关闭
-    clearBtn: true,//清除按钮
-    format: "yyyy/mm/dd"//日期格式
-});
+// $('.datetimepicker').datepicker({
+//     language: 'zh-CN', //语言
+//     autoclose: true, //选择后自动关闭
+//     clearBtn: true,//清除按钮
+//     format: "yyyy/mm/dd"//日期格式
+// });
